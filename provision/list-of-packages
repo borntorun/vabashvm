@@ -1,0 +1,5 @@
+## *** RPM based packages ***
+update-yum.sh		- permits to update the guest system
+
+## **** Software & util packages  **** ##
+add-user.sh			- permits to add a user to the system

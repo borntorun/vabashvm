@@ -32,14 +32,20 @@ or, to see usage parameters
 - $ vabashvm.sh -h
 
 ### Vagrant Box used and tested: 
-	- From this github project [Centos7-devel-x86_64](https://github.com/borntorun/packer-vagrant-centos)
-	- others to come...
+
+- From this github project [Centos7-devel-x86_64](https://github.com/borntorun/packer-vagrant-centos)
+- others to come...
 
 ### Systems and Shell versions tested: 
 
 * Windows 7
 	- GNU bash, version 3.1.20(4)-release-(i686-pc-msys) a.k.a. Git Bash
-	
+
+### Shell scripts for provision packages included
+
+- [Packages List](https://github.com/borntorun/vabashvm/blob/master/provision/list-of-packages)
+
+
 ### Author
 
 	João Carvalho, 2014

@@ -12,6 +12,7 @@ You will need the following software installed in your system:
 
   - [Vagrant](http://www.vagrantup.com/)
   - [VirtualBox](https://www.virtualbox.org/)
+  - a shell environment...
   
 ### Description
 
@@ -45,6 +46,9 @@ or, to see usage parameters
 
 - [Packages List](https://github.com/borntorun/vabashvm/blob/master/provision/list-of-packages)
 
+### Comments, Contributions and Testing
+
+- are much welcome and appreciatted...
 
 ### Author
 

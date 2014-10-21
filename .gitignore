@@ -1,0 +1,4 @@
+.*_vabashvm*
+/.log/
+/machines/*
+/provision/scripts/temp/*

@@ -13,21 +13,6 @@ You will need the following software installed in your system:
   - [Vagrant](http://www.vagrantup.com/)
   - [VirtualBox](https://www.virtualbox.org/)
   
-### Systems and Shell versions tested: 
-
-* Windows 7
-	- GNU bash, version 3.1.20(4)-release-(i686-pc-msys) a.k.a. Git Bash
-
-### How to use
-
-- Clone the project
-- Update $PATH with project folder
-- $ vabashvm.sh -b<box_name>
-
-or, to see usage parameters 
-
-- $ vabashvm.sh -h
-
 ### Description
 
 Permits:
@@ -35,3 +20,26 @@ Permits:
 - optional use of [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) plugin
 - provision the machine with any script provided in the [packages file](https://github.com/borntorun/vabashvm/blob/master/provision/packages) 
 - arguments to be passed to provision scripts
+	
+### How to use
+
+- Clone the project
+- Update $PATH with project folder
+- $ vabashvm.sh -b\<box_name>
+
+or, to see usage parameters 
+
+- $ vabashvm.sh -h
+
+### Vagrant Box used and tested: 
+	- From this github project [Centos7-devel-x86_64](https://github.com/borntorun/packer-vagrant-centos)
+	- others to come...
+
+### Systems and Shell versions tested: 
+
+* Windows 7
+	- GNU bash, version 3.1.20(4)-release-(i686-pc-msys) a.k.a. Git Bash
+	
+### Author
+
+	João Carvalho, 2014

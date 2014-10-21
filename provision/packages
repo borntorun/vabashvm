@@ -4,27 +4,28 @@
 ## File with list of packages to install in guest vm
 ## Lines beginning with:
 ##  +	Package selected to be installed
-##  *	Package already installed
-##  p	Indicates a 'system Priority' script need to be run with root priviledges before any others (ex: update script's)
+##  *	Package already installed (not yet supportted)
+##  p	Indicates a 'system Priority' (asap) script need to be run with root priviledges before any others (ex: update script's)
 ##  s	Indicates a 'System' script need to be run with root priviledges
 ##  u	Indicates a 'User' script need to be run under a user account
 ##  	Colon (:) Is used as separator and MUST exists
 ##  	[:args[:<argument>]]	
-##		At the end of the line indicates that arguments to the script will be passed from a file
-##		with the same filename as the script plus '.args', ex: add-user.sh.args . 
-##		The .args file will be created at runtime (one for each script) and you will be able to edit it
-##		after selecting and saving this file.
-##		<argument>	may be used to pass defaults arguments to the script instead of using a .args file
-##					(the vabashvm script will create+edit+save it for you)
-##					format: string[|string]	
+##			At the end of the line indicates that arguments to the script will be passed from a file
+##			with the same filename as the script plus '.args', ex: add-user.sh.args . 
+##			The .args file will be created at runtime (one for each script) and you will be able to edit it
+##			after selecting and saving this file.
+##			<argument>	may be used to pass defaults arguments to the script instead of using a .args file
+##					(	the vabashvm script will create+edit+save it for you)
+##						format: string[|string]	
 ##							is any string text ex: John
 ##							or a multiple string texts separated with pipe (|) ex: John|King of Portugal
 
-## IMPORTANT: Scripts will run (for each group [system|user]) in the order they appear in this file
+## IMPORTANT: 	Scripts will run (for each group [asap|system|user]) in the order they appear in this file
+##				p: 'asap' scripts will always run before others
 ## You can:	Edit each beginning of line to select a script: 
 ##			-include '+' to select a package
 ##			-remove '+' to unselect a package
-##			-include ':args' at the end if script has arguments to be passed into
+##			-include ':args' at the end of line if script has arguments to be passed into
 ##			Change the order of the lines to control the install order
 ##
 ## After making changes DON'T FORGET TO SAVE THIS FILE !!!

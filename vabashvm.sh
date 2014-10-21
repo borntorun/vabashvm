@@ -1,18 +1,6 @@
 #!/bin/bash
 
-#clear
-# Syntax:
-# 
-# vagrant-startup -b<box name> [-r<url remote box>] [-m<vm name>] [-l<login user to create>] [-g] [-u] [-h]
-#
-# -b	Mandatory option; Indicates the vagrant box <box name> from which to create the guest machine (must be already added to the system).
-#
-# -g	Indicates that vbox guest additions must be updated
-#
-# -m	Option to set the guest machine name <vm name>; If not set it will be the default form used by vagrant.
-#
-# -r	The url of the url box if is not found on the system <url remote box>	# not yet supportted
-#
+
 
 script_name="vabashvm.sh"
 script_description="$script_name - Creation and Provision VM with VirtualBox and Vagrant"
@@ -54,14 +42,13 @@ global_provision_dummy_file="${global_vm_path_provision}packages"
 # PATH TO WHERE TO COPY THE PROVISION FILES IN THE VM GUEST
 global_provision_remotepath="/tmp/"
 
-
 printusage ()
 {
-	output_force "\nUsage: %s -b<box name> [-r<url remote box>] [-m<vm name>] [-l<login user to create>] [-g] [-u] [-h]\n\n" $0
-	output_force "%-25s-%s\n" "box name" "mandatory! the name of vagrant box from which create the vm"	
-	output_force "%-25s-%s\n" "vm name" "the name to give to the vm"
-	output_force "%-25s-%s\n" "url remote box" "the remote url from where to retrieve the vagrant box"
-	#output_force "%-25s-%s\n" "-u" "to update the guest system"
+	output_force "\nUsage: %s -b<box_name> [-r<url_remote_box>] [-m<vm_name>] [-g] [-q] [-h]\n\n" $0
+	output_force "%-25s-%s\n" "box_name" "mandatory! the name of vagrant box from which create the vm"	
+	output_force "%-25s-%s\n" "vm_name" "the name to give to the vm"
+	output_force "%-25s-%s\n" "url_remote_box" "the remote url from where to retrieve the vagrant box (not used yet...)"
+	output_force "%-25s-%s\n" "-q" "quiet mode (log messages and error output will be redirected to files in ./log/)"
 	output_force "%-25s-%s\n" "-g" "to update the virtual box guest additions on the guest system"
 	output_force "%-25s-%s\n" "-h" "show usage"
 	exit 1

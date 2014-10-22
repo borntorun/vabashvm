@@ -40,7 +40,6 @@ or, to see usage parameters
 ### Systems/Environments versions tested: 
 
 * Windows 7
-	- Packer v0.7.1
 	- VirtualBox 4.3.12 r.93733
 	- Vagrant 1.6.5
 	- vagrant-vbguest plugin (0.10.0)
@@ -56,4 +55,4 @@ or, to see usage parameters
 
 ### Author
 
-	Jo„o Carvalho, 2014
+	Jo√£o Carvalho, 2014

@@ -37,10 +37,10 @@ or, to see usage parameters
 - From this github project [Centos7-devel-x86_64](https://github.com/borntorun/packer-vagrant-centos)
 - others to come...
 
-### Systems and Shell versions tested: 
+### Systems/Environments versions tested: 
 
 * Windows 7
-	- GNU bash, version 3.1.20(4)-release-(i686-pc-msys) a.k.a. Git Bash
+	- MSYS (Minimal SYStem) provided by MinGW / GNU bash, version 3.1.20(4)-release-(i686-pc-msys)
 
 ### Shell scripts for provision packages included
 

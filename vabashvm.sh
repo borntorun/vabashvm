@@ -8,6 +8,7 @@ script_description="$script_name - Creation and Provision VM with VirtualBox and
 
 ## Global Config Environment
 #
+global_uname=$(uname)
 global_path_local=$(pwd)
 global_path_script="${BASH_SOURCE[0]}"
 ## while is a symbolic link follow path..
@@ -268,28 +269,21 @@ mv "${global_vm_path}Vagrantfile" "${global_vm_path}Vagrantfile.original"
 
 convert_to_dospath()
 {	
-	## Convert posix path to windows (under several environments: for now supportted [mys(git bash)])
+	## Convert posix path to windows (under several environments: for now supportted [MINGW32(git bash)])
 	## - this is necessary for ruby to work when provisioning files to the vm guest
 	## - use: some_var=$(convert_to_dospath "$somevar_with_path_to_convert")
-	
-	local yes=1						
-	
-	case $OS in
-		Windows*)
-			[[ $OSTYPE=msys ]] && yes=0						
+	case $global_uname in
+		MINGW32_NT*|MSYS_NT)
+			local aux
+			aux=$(echo "$1" | sed 's|^\/||')		
+			aux=$(echo "$aux" | sed 's|\/|\\\\\\\\|g')		
+			aux=$(echo "$aux" | sed 's|^.|\0:|')
+			echo "$aux"						
+			;;
+		*)
+			echo "$1"
 			;;
 	esac
-	
-	if [[ yes -eq 0 ]]
-	then
-		local aux
-		aux=$(echo "$1" | sed 's|^\/||')		
-		aux=$(echo "$aux" | sed 's|\/|\\\\\\\\|g')		
-		aux=$(echo "$aux" | sed 's|^.|\0:|')
-		echo "$aux"
-	else
-		echo "$1"	
-	fi	
 }
 
 vi_file()

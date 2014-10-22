@@ -40,6 +40,10 @@ or, to see usage parameters
 ### Systems/Environments versions tested: 
 
 * Windows 7
+	- Packer v0.7.1
+	- VirtualBox 4.3.12 r.93733
+	- Vagrant 1.6.5
+	- vagrant-vbguest plugin (0.10.0)
 	- MSYS (Minimal SYStem) provided by MinGW / GNU bash, version 3.1.20(4)-release-(i686-pc-msys)
 
 ### Shell scripts for provision packages included

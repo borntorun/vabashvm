@@ -41,7 +41,8 @@ or, to see usage parameters
 
 * Windows 7
 	- Packer v0.7.1
-	- VirtualBox 4.3.12 r.93733
+	- VirtualBox 4.3.12 r.93733 with 4.3.14 guest additions (see [here](https://forums.virtualbox.org/viewtopic.php?f=3&t=62485&start=15#p298960) why)
+    - VirtualBox 4.3.16 r.95972 with 4.3.16 guest additions 
 	- Vagrant 1.6.5
 	- vagrant-vbguest plugin (0.10.0)
 	- MSYS (Minimal SYStem) provided by MinGW / GNU bash, version 3.1.20(4)-release-(i686-pc-msys)

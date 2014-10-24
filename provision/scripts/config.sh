@@ -1,12 +1,27 @@
 #!/bin/bash
 
+## ======================================================================
+## vabashvm - https://github.com/borntorun/vabashvm
+## Author: João Carvalho 
+## https://raw.githubusercontent.com/borntorun/vabashvm/master/LICENSE
+## ======================================================================
+## Run configuration scripts to provision the vm
+##
+## $1 - path to folder where scripts are located
+## 
+## This script was tested sucessfully in:
+## 		CentOS 7
+## ======================================================================
+
 # if an error occurs stops
 #set -e
 
-printf "\nRunning config script (config.sh)...\n"
+: ${_vabashvm="\nvabashvm:==>"}
+
+printf "${_vabashvm}Running config script (config.sh)..."
 
 remote_path=$1
-printf "%s\n" "$remote_path"
+#printf "${_vabashvm}%s\n" "$remote_path"
 
 for file in ${remote_path}vabashvm-provision-*
 do
@@ -14,7 +29,7 @@ do
 	isargs=$(echo $file | grep ".args$")
 	[[ ! -z $isargs ]] && continue
 
-	#printf "%s\n" "$file"
+	#printf "${_vabashvm}%s\n" "$file"
 
 	if [[ -f $file ]]
 	then
@@ -26,7 +41,7 @@ do
 			##array_args=($(cat "${file}.args"))
 			mapfile -t <"${file}.args"
 		fi
-		#printf "[%s]\n" "${MAPFILE[@]}"
+		#printf "${_vabashvm}[%s]\n" "${MAPFILE[@]}"
 		## veriry type os script
 		echo $file | grep "\-user\-" >/dev/null
 		result=$?
@@ -45,6 +60,6 @@ do
 	fi
 done
 
-printf "\nTerminating config script (config.sh).\n"
+printf "${_vabashvm}Terminating config script (config.sh)."
 
 exit 0

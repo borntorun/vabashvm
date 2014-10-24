@@ -13,17 +13,24 @@
 ## 		CentOS 7
 ## ======================================================================
 
+# if an error occurs stops
+#set -e
+
 : ${_vabashvm="\nvabashvm:==>"}
 
 printf "${_vabashvm}Running [%s]..." "$0"
 #printf -- "${_vabashvm}[%s]-" $*
 
-: ${vabashvm_thispackage="System update"}
+: ${vabashvm_thispackage="Node.js"}
 
-yum -y update
+printf "${_vabashvm}Installing [%s]..." "$vabashvm_thispackage"
 
-[[ ! $? -eq 0 ]] && printf "${_vabashvm}[%s] failed!" "$vabashvm_thispackage" && exit 1
+curl -L https://rpm.nodesource.com/setup | sudo bash - 1>/dev/null
 
-printf "${_vabashvm}[%s] terminated." "$vabashvm_thispackage"
+sudo yum -y install gcc-c++ make 1>/dev/null
+
+sudo yum -y install nodejs #1>/dev/null
+
+printf "${_vabashvm}Installation of [%s] terminated." "$vabashvm_thispackage"
 
 exit 0

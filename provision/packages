@@ -1,6 +1,8 @@
-## #################################################
-## vabashvm * https://github.com/borntorun/vabashvm
-##	 
+## ======================================================================
+## vabashvm - https://github.com/borntorun/vabashvm
+## Author: João Carvalho 
+## https://raw.githubusercontent.com/borntorun/vabashvm/master/LICENSE
+## ======================================================================
 ## File with list of packages to install in guest vm
 ## Lines beginning with:
 ##  +	Package selected to be installed
@@ -42,4 +44,8 @@
 p:update-yum.sh
 
 ## **** Software packages  **** ##
-s:add-user.sh:args
++s:add-user.sh:args:joao
++u:nodejs-nvm.sh:args:joao|v0.10.32
+
+## ******** Redhat Software packages  ******** ##
++s:nodejs-redhat-global.sh

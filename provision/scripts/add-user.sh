@@ -1,17 +1,32 @@
 #!/bin/bash
 
+## ======================================================================
+## vabashvm - https://github.com/borntorun/vabashvm
+## Author: João Carvalho 
+## https://raw.githubusercontent.com/borntorun/vabashvm/master/LICENSE
+## ======================================================================
 ## This script permits to add a user to the system
-## $1 - username 
 ##
-## username will be in wheel group and in the sudoers file
+## $1 - username
+##		user will be in wheel group and in the sudoers file
 ## 
-printf "Running [%s]...\n" "$0"
+## This script was tested sucessfully in:
+## 		CentOS 7
+## ======================================================================
+
+
 # if an error occurs stops
 set -e
 
+: ${_vabashvm="\nvabashvm:==>"}
+
+printf "${_vabashvm}Running [%s]..." "$0"
+#printf -- "${_vabashvm}[%s]-" $*
+: ${vabashvm_thispackage="Adding user"}
+
 #if user already exists echo...
 if id -u $1 >/dev/null 2>&1; then
-	printf "User [$1] already exists\n"
+	printf "${_vabashvm}User [$1] already exists\n"
 else
 	## Add the user and put it in wheel group 
 	## 
@@ -45,6 +60,7 @@ EOF
 	##
 fi
 
-printf "Ending adding user [$1].\n"
+printf "${_vabashvm}Adding user [%s] terminated." "$1"
+
 
 exit 0

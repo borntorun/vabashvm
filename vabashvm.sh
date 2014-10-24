@@ -1,9 +1,13 @@
 #!/bin/bash
 
+## ======================================================================
+## vabashvm - https://github.com/borntorun/vabashvm
+## Author: João Carvalho 
+## https://raw.githubusercontent.com/borntorun/vabashvm/master/LICENSE
+## ======================================================================
 
-
-script_name="vabashvm.sh"
-script_description="$script_name - Creation and Provision VM with VirtualBox and Vagrant"
+script_name="vabashvm"
+script_description="$script_name - Creation and Provision VM with VirtualBox and Vagrant\nhttps://github.com/borntorun/vabashvm"
 
 
 ## Global Config Environment
@@ -45,13 +49,13 @@ global_provision_remotepath="/tmp/"
 
 printusage ()
 {
-	output_force "\nUsage: %s -b<box_name> [-r<url_remote_box>] [-m<vm_name>] [-g] [-q] [-h]\n\n" $0
-	output_force "%-25s-%s\n" "box_name" "mandatory! the name of vagrant box from which create the vm"	
-	output_force "%-25s-%s\n" "vm_name" "the name to give to the vm"
-	output_force "%-25s-%s\n" "url_remote_box" "the remote url from where to retrieve the vagrant box (not used yet...)"
-	output_force "%-25s-%s\n" "-q" "quiet mode (log messages and error output will be redirected to files in ./log/)"
-	output_force "%-25s-%s\n" "-g" "to update the virtual box guest additions on the guest system"
-	output_force "%-25s-%s\n" "-h" "show usage"
+	output_force "\nUsage: $1 -b<box_name> [-r<url_remote_box>] [-m<vm_name>] [-g] [-q] [-h]\n\n"
+	output_force "%-25s-%s" "box_name" "mandatory! the name of vagrant box from which create the vm"	
+	output_force "%-25b-%b" "vm_name" "the name to give to the vm"
+	output_force "%-25b-%b" "url_remote_box" "the remote url from where to retrieve the vagrant box (not used yet...)"
+	output_force "%-25b-%b" "-q" "quiet mode (log messages and error output will be redirected to files in ./log/)"
+	output_force "%-25b-%b" "-g" "to update the virtual box guest additions on the guest system"
+	output_force "%-25b-%b" "-h" "show usage"
 	exit 1
 }
 
@@ -80,16 +84,17 @@ fi
 # TODO:change path para config
 source ${global_path_utilscripts}ioutil.sh "${global_path_log}error" "${global_path_log}log"
 
+
 if [ $# -eq 0 ]  
 then
-  printusage  
+  printusage "$script_name"
 fi 
 
 while getopts :b:m:r:hgq opt 
 do
 	case $opt in
 	\?)	output_force "\nInvalid options: -$OPTARG\n"
-		printusage
+		printusage "$script_name"
 		;;
 	q)	auxquiet=1;;
 	b)	[[ ! $vmbox ]] && vmbox=$OPTARG;;
@@ -99,11 +104,13 @@ do
 	:)	output_force "\nOption -$OPTARG requires an argument.\n"
 		printusage		
 		;;
-	h)	output_force "Help:\n"
-		printusage		
+	h)	#output_force "Help:\n"
+		printusage "$script_name"	
 		;;
 	esac
 done
+
+
 
 [[ $auxquiet ]] && set_quiet "$script_description"
 
@@ -154,35 +161,36 @@ copy_vagrantfile_template()
 test_vagrantbox_exists()
 {
 	## Test is box was added to Vagarnt boxes
-	output "\nTesting vagrant box..."
+	output "Testing vagrant box..."
 	vagrant box list | grep $vmbox >/dev/null
-	[[ ! $? -eq 0 ]] && exit_onerror "Vagrant box [%s] does not exists. Please add the box first.\n" "$vmbox"	
+	[[ ! $? -eq 0 ]] && exit_onerror "Vagrant box [%s] does not exists. Please add the box first." "$vmbox"	
 }
 test_vbguestplugin_exists()
 {
 	# Test if plugin vagrant-vbguest is installed (if not ask to install...)	
-	output "\nTesting vagrant-vbguest plugin..."
+	output "Testing vagrant-vbguest plugin..."
 
 	vagrant plugin list | grep -q "vagrant-vbguest"
 	[[ ! $? -eq 0 ]] && novbguestplugin=1
 	
 	if [[ $novbguestplugin ]]
 	then
-		output_force "\nPlugin for virtual box guest additions vagrant-vbguest is not installed.\nDo you want to install it? (y/n)"
+		output_force "Plugin for virtual box guest additions vagrant-vbguest is not installed."
+		output_force "Do you want to install it? (y/n)"
 		while :
 		do
 			read 
 			case "$REPLY" in
 				[Yy])
 					output_notsoforce "Installing plugin..."
-					output "\n"
+					
 					vagrant plugin install vagrant-vbguest
 					vagrant plugin list | grep "vagrant-vbguest" >/dev/null
 					[[ $? -eq 0 ]] && unset novbguestplugin
 					break
 				;;
 				[Nn]) 
-					output_both "\nPlugin vagrant-vbguest will not be installed."
+					output_both "Plugin vagrant-vbguest will not be installed."
 					break
 				;;
 				*) output_force "Please, reply (y or n)";;
@@ -198,12 +206,12 @@ uncomment_line_vagrantfile()
 }
 reportlineoutput()
 {
-	output_both "\n\t%-25s:%s" "${@}"
+	output_both "\t%-25s:%s" "${@}"
 }
 report_wait_confirmation()
 {
 	# Everything seems ok, report and wait confirmation...	
-	output_both "\nReporting:\n"	
+	output_both "Reporting:\n"	
 	reportlineoutput "Folder will be created" "$global_vm_path"
 	reportlineoutput "Vagrant Box to use" "$vmbox"
 	[[ $vmname ]] && reportlineoutput "VM Name" "$vmname"
@@ -212,13 +220,12 @@ report_wait_confirmation()
 	[[ $vbguestupdate ]] && [[ $novbguestplugin ]] && reportlineoutput "VB Guest Additions" "will ***NOT*** be updated. Install vagrant-vbguest plugin first."
 	[[ $vbguestupdate ]] && [[ ! $novbguestplugin ]] && reportlineoutput "VB Guest Additions" "will be updated." 
 
-	output_force "\n\nIs this correct? (y/n)"	
+	output_force "Is this correct? (y/n)"	
 	while :
 	do
 		read 	
 		case "$REPLY" in
 		[Yy]) 
-			output "\n"
 			break;;
 		[Nn]) exit_onterminating "User choose to terminate script.";;
 		*) output_force "Please, reply (y or n)";;
@@ -226,6 +233,7 @@ report_wait_confirmation()
 		
 	done
 }
+set_package $script_name
 
 test_vagrantbox_exists
 
@@ -234,7 +242,7 @@ test_vbguestplugin_exists
 report_wait_confirmation
 
 #If we get here Confirmation is ok...let's go...
-output_both "Running...\n"
+output_both "Creating machine...\n"
 
 if [[ ! -d $global_vms_path ]]
 then
@@ -246,10 +254,10 @@ fi
 [[ -d $global_vm_path ]]  && exit_onerror "Remove folder [%s] first " "$global_vm_path"
 mkdir "$global_vm_path"
 [[ ! $? -eq 0 ]] && exit_onerror "Error creating folder [%s]" "$global_vm_path"
-output "Folder created: [%s]\n" "$global_vm_path"
+output "Folder created: [%s]" "$global_vm_path"
 mkdir "$global_vm_path_provision" 
 [[ ! $? -eq 0 ]] && exit_onerror "Error creating folder [%s]" "$global_vm_path_provision"
-output "Folder created: [%s]\n" "$global_vm_path_provision"
+output "Folder created: [%s]" "$global_vm_path_provision"
 mkdir "$global_vm_path_provision_scripts" 
 [[ ! $? -eq 0 ]] && exit_onerror "Error creating folder [%s]" "$global_vm_path_provision_scripts"
 output "Folder created: [%s]\n" "$global_vm_path_provision_scripts"
@@ -434,9 +442,9 @@ provision_global()
 	
 	sed -i "s|^.*#vabashvm-file-source#|\tconfig.vm.provision \"file\", source: \""$(convert_to_dospath "${global_provision_path_scripts}${dummy_file}")"\", destination: \"${global_provision_remotepath}${dummy_file}\"\n\t#vabashvm-file-source#|" "${global_vm_path}Vagrantfile"
 }
-vagrant_finalup()
+vagrant_final()
 {
-	## Final boot Vagrantfile-Final template
+	## Final "boot" Vagrantfile-Final template
 	## - this template is the one that will remain as the Vagrantfile to boot the machine for use
 	copy_vagrantfile_template Vagrantfile-Final
 
@@ -449,9 +457,9 @@ vagrant_finalup()
 	
 	provision_global
 	
-	## boot 
-	vagrant up --provision
-	[[ ! $? -eq 0 ]] && exit_onerror "Error on boot up (F)"
+	## no need to boot because didnt halt previous step
+	#vagrant up --provision
+	#[[ ! $? -eq 0 ]] && exit_onerror "Error on boot up (F)"
 	
 }
 vagrant_secondup()
@@ -475,9 +483,12 @@ vagrant_secondup()
 	## 2nd boot with provision
 	vagrant up --provision
 	[[ ! $? -eq 0 ]] && exit_onerror "Error on boot up (2)"
-	vagrant halt
-	[[ ! $? -eq 0 ]] && exit_onerror "Error on halt (2)"
+	
+	## dont need to halt the machine
+	#vagrant halt
+	#[[ ! $? -eq 0 ]] && exit_onerror "Error on halt (2)"
 	#
+	
 	## Backup 2nd vagrantfile
 	mv "${global_vm_path}Vagrantfile" "${global_vm_path}Vagrantfile.2"
 
@@ -514,40 +525,8 @@ provision_filesconfig
 
 vagrant_secondup
 
-vagrant_finalup
+vagrant_final
 
-exit_onsucess "\nMachine [%s] is running..." "$vmname"
+exit_onsucess "Machine [%s] is running..." "$vmname"
 
 exit 0
-
-isvalidip() #@ USAGE: isvalidip DOTTED-QUAD 
-{ 
-	#this function credits: Pro Bash Programming by Chris F.A. Johnson
-	case $1 in 
-	## reject the following: 
-	## empty string 
-	## anything other than digits and dots 
-	## anything not ending in a digit 
-	"" | *[!0-9.]* | *[!0-9]) return 1 ;; 
-	esac 
-	## Change IFS to a dot, but only in this function 
-	local IFS=. 
-	## Place the IP address into the positional parameters; 
-	## after word splitting each element becomes a parameter 
-	set -- $1 
-	[ $# -eq 4 ] && ## must be four parameters 
-	## each must be less than 256 
-	## A default of 666 (which is invalid) is used if a parameter is empty 
-	## All four parameters must pass the test 
-	[ ${1:-666} -le 255 ] && [ ${2:-666} -le 255 ] && 
-	[ ${3:-666} -le 255 ] && [ ${4:-666} -le 255 ] 
-} 
-# Test is ip adress is valid
-#if [[ $IPADDR ]]
-#then
-#	if ! isvalidip "$IPADDR"
-#	then 
-#		exit_onerror "Invalid ip address:[%15s]\n" "$IPADDR" 
-#		exit 1
-#	fi
-#fi 

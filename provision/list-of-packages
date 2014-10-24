@@ -1,5 +1,15 @@
 ## *** RPM based packages ***
 update-yum.sh		- permits to update the guest system
 
+
 ## **** Software & util packages  **** ##
-add-user.sh			- permits to add a user to the system
+
+
+add-user.sh					- Permits to add a user to the system
+nodejs-nvm.sh				- Install Node.js with Node Version Manager
+
+
+## ******** Redhat* Software packages  ******** ##
+
+
+nodejs-redhat-global.sh		- Install Node.js global via packager manager

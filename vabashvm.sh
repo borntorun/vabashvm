@@ -154,8 +154,11 @@ copy_vagrantfile_template()
 	[[ ! -f ${aux_vagrantfile} ]] && exit_onerror "File [%s] could not be copied" "${global_provision_path}$1"
 	
 	## Replace name of vm/box on Vagrantfile	
+	
+	##local _vmbox=$(printf "$vmbox" | sed "s|/|\\\\/|g")
+	
 	[[ $vmname ]] && sed -i "s/^.*#vabashvm-vm-name#/\t\tv.name = \"$vmname/" "${aux_vagrantfile}"	
-	sed -i "s/^.*#vabashvm-vm-box#/\tconfig.vm.box = \"$vmbox/" "${aux_vagrantfile}"	
+	sed -i "s|^.*#vabashvm-vm-box#|\tconfig.vm.box = \"$vmbox|" "${aux_vagrantfile}"	
 	[[ $vmboxurl ]] && sed -i "s/^.*#vabashvm-vm-box#/#config.vm.box_url = \"$vmboxurl/" "${aux_vagrantfile}"
 }
 test_vagrantbox_exists()
@@ -240,6 +243,9 @@ test_vagrantbox_exists
 test_vbguestplugin_exists
 
 report_wait_confirmation
+
+
+
 
 #If we get here Confirmation is ok...let's go...
 output_both "Creating machine...\n"

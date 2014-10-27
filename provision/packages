@@ -35,17 +35,25 @@
 ## Be carefull to maintain the format valid.
 ##
 ## ######### DO NOT CHANGE ABOVE THIS LINE #########
+## ######### DO NOT PUT COMMENTS AFTER COMMAND LINE PACKAGE #########
+## ######### PUT COMMENTS IN A SEPARATE LINE BEFORE EACH COMMAND LINE PACKAGE #########
 
 ## **** Special packages - Must run before anyting  **** ##
+	## Update packages ##
 
-## Update packages ##
-
-## *** RPM based packages ***
+	## *** RPM based packages ***
 p:update-yum.sh
+p:net-eth-rules.sh
+## **** End Special packages **** ##
 
-## **** Software packages  **** ##
-+s:add-user.sh:args:joao
-+u:nodejs-nvm.sh:args:joao|v0.10.32
 
-## ******** Redhat Software packages  ******** ##
-+s:nodejs-redhat-global.sh
+## **** Software and util packages  **** ##
+s:add-user.sh:args:joao
+u:nodejs-nvm.sh:args:joao|v0.10.32
+s:nodejs-redhat-global.sh
+s:heroku.sh
+
+# Install latest version of git
+s:git.sh
+# Install specific version of git
+s:git.sh:args:1.9.0

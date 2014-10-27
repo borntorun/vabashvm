@@ -1,15 +1,14 @@
-## *** RPM based packages ***
 update-yum.sh		- permits to update the guest system
 
+add-user.sh			- Permits to add a user to the system
 
-## **** Software & util packages  **** ##
-
-
-add-user.sh					- Permits to add a user to the system
-nodejs-nvm.sh				- Install Node.js with Node Version Manager
-
-
-## ******** Redhat* Software packages  ******** ##
-
+nodejs-nvm.sh		- Install Node.js with Node Version Manager
 
 nodejs-redhat-global.sh		- Install Node.js global via packager manager
+
+heroku.sh			- Install heroku toolbelt
+
+git.sh				- Install git
+
+net-eth-rules		- Configure network interfaces to use eth* name rules (CentOS 7 systems) 
+

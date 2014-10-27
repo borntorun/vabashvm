@@ -26,6 +26,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 	#config.vm.box_url = "#vabashvm-vm-box-url#"	#THIS LINE MUST BE LIKE IT IS - DO NOT CHANGE!
 	
+	
+	
 	## ################################################################################################################
 	## vabashvm Block 
 	## FOLLOWING LINES MUST OBEY CERTAIN RULES - DO NOT CHANGE! - OR CHANGE AS YOU WILL BUT DONT FORGET TO LOOK THE SCRIPT...

@@ -30,7 +30,7 @@ if id -u $1 >/dev/null 2>&1; then
 else
 	## Add the user and put it in wheel group 
 	## 
-	adduser -m -G wheel $1
+	useradd -m -G wheel $1
 	#set passwd equal to login
 	echo $1$'\n'$1$'\n' | passwd $1
 	#end

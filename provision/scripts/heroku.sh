@@ -33,7 +33,8 @@ which heroku >/dev/null 2>&1
 
 rm -f install-heroku.sh
 
-if [ -z "$(which wget)" ]; then
+which wget >/dev/null 2>&1
+if [[ ! $? -eq 0 ]]; then
 	curl -s -o install-heroku.sh $_urlheroku
 else
 	wget -qc -O install-heroku.sh $_urlheroku
@@ -42,7 +43,10 @@ fi
 [[ $? -eq 0 ]] && sed -i "s|^SCRIPT$|SCRIPT\\n[[ ! \$? -eq 0 ]] \&\& echo \"Error in installation.\" \&\& exit 1|" install-heroku.sh && sh install-heroku.sh
 [[ ! $? -eq 0 ]] && printf "${_vabashvm}[%s] not installed." "$_thispackage" && exit 0
 
+rm -f z_vabashvm_$_thispackage.sh
 echo "export PATH=${_installdir}:\$PATH" >> /etc/profile.d/z_vabashvm_$_thispackage.sh
+
+rm -f install-heroku.sh
 
 printf "${_vabashvm}Installation of [%s] terminated.\n" "$_thispackage"
 

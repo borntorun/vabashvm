@@ -32,6 +32,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	## vabashvm Block 
 	## FOLLOWING LINES MUST OBEY CERTAIN RULES - DO NOT CHANGE! - OR CHANGE AS YOU WILL BUT DONT FORGET TO LOOK THE SCRIPT...
 
+	#vabashvm-private-network#
+	
 	config.vm.box_check_update = false
 
 	## If exists vbguest plugin, following line will be uncommented if (-g | --vbguest-update) is NOT choosen

@@ -34,6 +34,7 @@ do
 	if [[ -f $file ]]
 	then
 		array_args=()
+		unset MAPFILE
 		## get parameters if exists
 		if [[ -f ${file}.args ]]
 		then
@@ -55,7 +56,7 @@ do
 			fi
 		else
 			## run script normal
-			sh "$file" "${MAPFILE[@]}"			
+			sh -l "$file" "${MAPFILE[@]}"			
 		fi
 	fi
 done

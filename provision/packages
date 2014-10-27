@@ -8,6 +8,7 @@
 ##  +	Package selected to be installed
 ##  *	Package already installed (not yet supportted)
 ##  p	Indicates a 'system Priority' (asap) script need to be run with root priviledges before any others (ex: update script's)
+##  n	Indicates a 'network config' configuration (ex: private network config)
 ##  s	Indicates a 'System' script need to be run with root priviledges
 ##  u	Indicates a 'User' script need to be run under a user account
 ##  	Colon (:) Is used as separator and MUST exists
@@ -38,22 +39,35 @@
 ## ######### DO NOT PUT COMMENTS AFTER COMMAND LINE PACKAGE #########
 ## ######### PUT COMMENTS IN A SEPARATE LINE BEFORE EACH COMMAND LINE PACKAGE #########
 
-## **** Special packages - Must run before anyting  **** ##
-	## Update packages ##
+## -------------------- Config vm - Must run before anyting  -------------------- ##
 
-	## *** RPM based packages ***
+## **** Network interfaces private networks (host-only) **** ##
+n::args:192.168.40.100|255.255.255.0
+
+## -------------------- Special packages - Must run before anyting  -------------------- ##
+## Update packages ##
+## *** RPM based packages ***
+
 p:update-yum.sh
+
+##change network device names to eth* instead of the default names used by CentOS
 p:net-eth-rules.sh
-## **** End Special packages **** ##
 
+## -------------------- Software and util packages  -------------------- ##
 
-## **** Software and util packages  **** ##
-s:add-user.sh:args:joao
-u:nodejs-nvm.sh:args:joao|v0.10.32
+s:add-user.sh:args:john
+
+# Install node by nvm in local user
+u:nodejs-nvm.sh:args:john|v0.10.32
+
+# Install node global
 s:nodejs-redhat-global.sh
+
+# Install heroku toolbelt
 s:heroku.sh
 
 # Install latest version of git
 s:git.sh
+
 # Install specific version of git
 s:git.sh:args:1.9.0

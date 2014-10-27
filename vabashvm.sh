@@ -43,6 +43,7 @@ global_vm_path_provision_scripts="${global_vm_path_provision}scripts/"
 global_vm_filepackages="${global_vm_path_provision}packages"
 
 global_provision_dummy_file="${global_vm_path_provision}packages"
+global_config_private_network=""
 
 # PATH TO WHERE TO COPY THE PROVISION FILES IN THE VM GUEST
 global_provision_remotepath="/tmp/"
@@ -81,8 +82,8 @@ then
 fi
 
 # Source Util Functions
-# TODO:change path para config
 source ${global_path_utilscripts}ioutil.sh "${global_path_log}error" "${global_path_log}log"
+source ${global_path_utilscripts}util.sh
 
 
 if [ $# -eq 0 ]  
@@ -319,11 +320,8 @@ provision_files()
 	local args_file
 	local args_file_dest
 	local args_string
-	local prefix
-	
-	local typefiles
-	
-	#shift
+	local prefix	
+	local typefiles	
 		
 	osfiles=( "$@" )
 	#printf "Line:%s\n" "${osfiles[@]}"			
@@ -332,20 +330,32 @@ provision_files()
 	do
 	
 		typefiles=${line:1:1}
-	
+		line=$(echo "$line" | sed "s|^+.:||")		
+		file_name=$(echo "$line" | sed "s|:args.*$||g")
+		
 		case $typefiles in
 			s) typefiles="sys";;
 			u) typefiles="user";;
 			p) typefiles="asap";;
+			n) ## private network config
+				args_string=$(echo "$line" | sed "s|^.*:args:||")
+				#printf "%s\n" "$args_string"
+				
+				local _netmask=$(echo "$args_string" | sed "s/^.*|//")
+				local _ip=$(echo "$args_string" | sed "s/|.*$//")
+				
+				([[ ! $(util_isvalidip "$_ip") -eq 0 ]] || [[ ! $(util_isvalidip "$_netmask") -eq 0 ]]) && output_force "Invalid format network config: [%s]" "$args_string" && continue
+				
+				global_config_private_network=${global_config_private_network}"\n\tconfig.vm.network \"private_network\", ip: \"${_ip}\", auto_config: true, netmask: \"${_netmask}\""
+				
+				continue
+				;;
 			*) exit_onerror "Error in packages file";;
 		esac
 
 		printf -v idxprefix -- "-%03d-" "$i"
 		printf -v prefix "vabashvm-provision$idxprefix$typefiles-"
 		i=$(($i+1))
-		
-		line=$(echo "$line" | sed "s|^+.:||")		
-		file_name=$(echo "$line" | sed "s|:args.*$||g")
 		
 		filesource_provision=$(convert_to_dospath "${global_provision_path_scripts}${file_name}")
 		filedest_provision="${global_provision_remotepath}${prefix}${file_name}"
@@ -357,7 +367,7 @@ provision_files()
 		sed -i "s|^.*#vabashvm-file-source#|\tconfig.vm.provision \"file\", source: \"$filesource_provision\", destination: \"$filedest_provision\"\n\t#vabashvm-file-source#|" "${global_vm_path}Vagrantfile"			
 		
 
-#printf "%s\n" "$line" "$typefiles" "$file_name" "$filesource_provision" "$filedest_provision" 
+		#printf "%s\n" "$line" "$typefiles" "$file_name" "$filesource_provision" "$filedest_provision" 
 			
 		args_string=$(echo "$line" | sed "s|^.*:args:||")
 		
@@ -427,12 +437,16 @@ provision_software_packages()
 	provision_filesrun "^+s:\|^+u:"
 }
 
-provision_prority_packages()
+provision_priority_packages()
 {
 	provision_filesrun "^+p:"
 }
+provision_priority_network()
+{
+	provision_filesrun "^+n:"	
+}
 
-provision_prority_packages_check()
+provision_priority_packages_check()
 {
 	grep -q "$1" "$global_vm_filepackages"
 	([[ $? -eq 0 ]] && echo "0") || echo "1"
@@ -447,6 +461,8 @@ provision_global()
 	local dummy_file="vabashvm-provision-dummy" 
 	
 	sed -i "s|^.*#vabashvm-file-source#|\tconfig.vm.provision \"file\", source: \""$(convert_to_dospath "${global_provision_path_scripts}${dummy_file}")"\", destination: \"${global_provision_remotepath}${dummy_file}\"\n\t#vabashvm-file-source#|" "${global_vm_path}Vagrantfile"
+	
+	[[ ! -z $global_config_private_network ]] && sed -i "s|^.*#vabashvm-private-network#|\t${global_config_private_network}|" "${global_vm_path}Vagrantfile"
 }
 vagrant_final()
 {
@@ -493,8 +509,7 @@ vagrant_secondup()
 	## dont need to halt the machine
 	#vagrant halt
 	#[[ ! $? -eq 0 ]] && exit_onerror "Error on halt (2)"
-	#
-	
+	#	
 	## Backup 2nd vagrantfile
 	mv "${global_vm_path}Vagrantfile" "${global_vm_path}Vagrantfile.2"
 
@@ -505,10 +520,13 @@ vagrant_firstup()
 	## - this template will be used for provisioning the priority packages ex:to do a system update
 	copy_vagrantfile_template Vagrantfile-1
 
+	
+	[[ "$prioritynetwork" == "0" ]] && provision_priority_network
+	
 	provision_global
 	
-	provision_prority_packages
-
+	[[ "$prioritypack" == "0" ]] && provision_priority_packages
+	
 	if [[ ! $novbguestplugin ]]
 	then
 		(uncomment_line_vagrantfile "#vbguest.no_remote#" && uncomment_line_vagrantfile "#vbguest.auto_update_false#")
@@ -527,7 +545,11 @@ vagrant_firstup()
 
 provision_filesconfig
 
-[[ "$(provision_prority_packages_check "^+p:")" == "0" ]] && vagrant_firstup
+prioritynetwork=$(provision_priority_packages_check "^+n:")
+
+prioritypack=$(provision_priority_packages_check "^+p:")
+
+([[ "$prioritynetwork" == "0" ]] || [[ "$prioritypack" == "0" ]]) && vagrant_firstup
 
 vagrant_secondup
 

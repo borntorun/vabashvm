@@ -25,16 +25,18 @@ Permits:
 ### How to use
 
 - Clone the project
-- Update $PATH with project folder
-- $ vabashvm.sh -b\<box_name>
+- (optional:Update $PATH with project folder)
+- $ vabashvm.sh -b\<box_name> -m\<vm_name>
+    - the script will create a folder 'machines/\<vm_name> in current folder to hold the vagrant files
+- access the folder created and use vagrant commands as usual
 
 or, to see usage parameters 
 
 - $ vabashvm.sh -h
 
-### Vagrant Box used and tested: 
+### Vagrant Box supported, used and tested (until now): 
 
-- From this github project [Centos7-devel-x86_64](https://github.com/borntorun/packer-vagrant-centos)
+- CentOS 7 - From this github project [Centos7-devel-x86_64](https://github.com/borntorun/packer-vagrant-centos)
 - others to come...
 
 ### Systems/Environments versions tested: 

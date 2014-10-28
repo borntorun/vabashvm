@@ -14,7 +14,6 @@
 ## 		CentOS 7
 ## ======================================================================
 
-
 # if an error occurs stops
 set -e
 
@@ -24,21 +23,20 @@ printf "${_vabashvm}Running [%s]..." "$0"
 #printf -- "${_vabashvm}[%s]-" $*
 : ${vabashvm_thispackage="Adding user"}
 
-#if user already exists echo...
-if id -u $1 >/dev/null 2>&1; then
-	printf "${_vabashvm}User [$1] already exists\n"
-else
-	## Add the user and put it in wheel group 
-	## 
-	useradd -m -G wheel $1
-	#set passwd equal to login
-	echo $1$'\n'$1$'\n' | passwd $1
-	#end
-	
-	## Give user permissions to exec sudo with no passwd:
-	##
-	## - create a script that allows sudoers be edited with visudo in an automated way
-	cat <<EOF >> /tmp/vabashvm-provision-user-sudoers.sh
+if [[ $# -eq 1 ]] && [[ ! -z $1 ]]
+then
+
+	if id -u "$1" >/dev/null 2>&1; then
+		printf "${_vabashvm}User [$1] already exists\n"
+	else
+		useradd -m -G wheel "$1"
+		#set passwd equal to login
+		echo "$1"$'\n'"$1"$'\n' | passwd "$1"
+				
+		## Give user permissions to exec sudo with no passwd:
+		##
+		## - create a script that allows sudoers be edited with visudo in an automated way
+		cat <<EOF >> /tmp/vabashvm-provision-user-sudoers.sh
 #!/bin/bash
 
 #Edit sudoers with visudo credits to Brian Smith here:
@@ -47,20 +45,25 @@ else
 set -e
 
 if [ ! -z "\$1" ]; then
-        echo "$1        ALL=(ALL)       NOPASSWD: ALL" >> \$1        
+		echo "$1        ALL=(ALL)       NOPASSWD: ALL" >> \$1        
 else
-        export EDITOR=\$0
-        visudo
+		export EDITOR=\$0
+		visudo
 fi
 EOF
-	## Run the script
-	chmod u+x /tmp/vabashvm-provision-user-sudoers.sh
-	/tmp/vabashvm-provision-user-sudoers.sh
-	rm -f /tmp/vabashvm-provision-user-sudoers.sh
-	##
+		if [[ -e /tmp/vabashvm-provision-user-sudoers.sh ]]
+		then
+			## Run the script
+			chmod u+x /tmp/vabashvm-provision-user-sudoers.sh
+			/tmp/vabashvm-provision-user-sudoers.sh
+			rm -f /tmp/vabashvm-provision-user-sudoers.sh
+			##
+		fi
+	fi
+else
+	printf "${_vabashvm}User not provided."
 fi
 
-printf "${_vabashvm}Adding user [%s] terminated." "$1"
-
+printf "${_vabashvm}[%s] terminated." "$0"
 
 exit 0

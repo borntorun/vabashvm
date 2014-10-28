@@ -1,14 +1,15 @@
-update-yum.sh		- permits to update the guest system
+update-yum.sh		- to update the guest system
 
-add-user.sh			- Permits to add a user to the system
+add-user.sh			- to add a user to the system
 
-nodejs-nvm.sh		- Install Node.js with Node Version Manager
+nodejs-nvm.sh		- install Node.js with Node Version Manager
 
-nodejs-redhat-global.sh		- Install Node.js global via packager manager
+nodejs-redhat-global.sh		- install Node.js global via packager manager
 
-heroku.sh			- Install heroku toolbelt
+heroku.sh			- install heroku toolbelt
 
-git.sh				- Install git
+git.sh				- install git (chossing version in args ou install latest)
 
-net-eth-rules		- Configure network interfaces to use eth* name rules (CentOS 7 systems) 
+net-eth-rules.sh	- configure network interfaces to use eth* name rules (CentOS 7 systems) 
 
+hostname.sh			- set hostname on guest system

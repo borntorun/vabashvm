@@ -22,7 +22,7 @@
 ##						format: string[|string]	
 ##							is any string text ex: John
 ##							or a multiple string texts separated with pipe (|) ex: John|King of Portugal
-
+##
 ## IMPORTANT: 	Scripts will run (for each group [asap|system|user]) in the order they appear in this file
 ##				p: 'asap' scripts will always run before others
 ## You can:	Edit each beginning of line to select a script: 
@@ -42,7 +42,9 @@
 ## -------------------- Config vm - Must run before anyting  -------------------- ##
 
 ## **** Network interfaces private networks (host-only) **** ##
-n::args:192.168.40.100|255.255.255.0
+## in this block inline args are mandatory
+## ex: n::args:192.168.40.100|255.255.255.0
+n::args:
 
 ## -------------------- Special packages - Must run before anyting  -------------------- ##
 ## Update packages ##
@@ -54,11 +56,14 @@ p:update-yum.sh
 p:net-eth-rules.sh
 
 ## -------------------- Software and util packages  -------------------- ##
+# set hostname supplid in args
+s:hostname.sh:args
 
-s:add-user.sh:args:john
+# create user supplied in args
+s:add-user.sh:args
 
-# Install node by nvm in local user
-u:nodejs-nvm.sh:args:john|v0.10.32
+# Install node by nvm in local user with version supplied in args
+u:nodejs-nvm.sh:args
 
 # Install node global
 s:nodejs-redhat-global.sh
@@ -69,5 +74,5 @@ s:heroku.sh
 # Install latest version of git
 s:git.sh
 
-# Install specific version of git
-s:git.sh:args:1.9.0
+# Install specific version of git supplied in args
+s:git.sh:args

@@ -3,7 +3,7 @@
 Create and provision vm's for VirtualBox using Vagrant using shell scripts.
 
 The script permits the creation of VirtualBox vm from the Vagrant box specified and according to the parameters used
-The aim for this project is to facilitate the rapid creation of a vm with a certain group of packages installed (selected by the user).
+The aim for this project is to facilitate the rapid creation of a vm with a certain group of packages installed (selected by the user). This is intended only for development/testing environments.
 
 <hr>
 ### Requirements

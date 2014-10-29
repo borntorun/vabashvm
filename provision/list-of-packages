@@ -14,4 +14,4 @@ net-eth-rules.sh	- configure network interfaces to use eth* name rules (CentOS 7
 
 hostname.sh			- set hostname on guest system
 
-s:mongodb.sh		- install MongoDB 32 or 64 (default) bit version
+mongodb.sh		- install MongoDB 32 or 64 (default) bit version

@@ -18,13 +18,12 @@
 # if an error occurs stops
 #set -e
 
-: ${_vabashvm="\nvabashvm:==>"}
-
+: ${_thispackage="Node.js-NVM"}
+: ${_vabashvm="\nvabashvm:==>$_thispackage:"}
+: ${_thisfilename=${0##*/}}
 printf "${_vabashvm}Running [%s]..." "$0"
 #printf -- "${_vabashvm}[%s]-" $*
 
-: ${vabashvm_thispackage="Node.js with NVM"}
-: ${vabashvm_thisfilename=${0##*/}}
 
 ## important! change to home user folder
 cd
@@ -57,11 +56,11 @@ fi
 
 if [[ ! -z $vabashvm_nodeversion ]]
 then
-	[[ ! ${_nvminstalled} -eq 0 ]] && (printf "${_vabashvm}NVM not installed. Cannot install Node.js version %s." "$vabashvm_nodeversion") && exit 0
-	printf "${_vabashvm}Installing Node [%s]..." "$vabashvm_nodeversion"
+	[[ ! ${_nvminstalled} -eq 0 ]] && (printf "${_vabashvm}NVM not installed. Cannot install Node.js version [%s]." "$vabashvm_nodeversion") && exit 0
+	printf "${_vabashvm}Installing Node.js version [%s]..." "$vabashvm_nodeversion"
 	(nvm install $vabashvm_nodeversion 1>/dev/null 2>&1) && (nvm use $vabashvm_nodeversion) &&  (nvm alias default $vabashvm_nodeversion)	
 fi
 
-printf "${_vabashvm}Installation of [%s] terminated." "$vabashvm_thispackage"
 
+printf "${_vabashvm}Terminated.[%s]" "$0"
 exit 0

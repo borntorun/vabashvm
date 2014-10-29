@@ -13,3 +13,5 @@ git.sh				- install git (chossing version in args ou install latest)
 net-eth-rules.sh	- configure network interfaces to use eth* name rules (CentOS 7 systems) 
 
 hostname.sh			- set hostname on guest system
+
+s:mongodb.sh		- install MongoDB 32 or 64 (default) bit version

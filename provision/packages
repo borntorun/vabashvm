@@ -44,7 +44,7 @@
 ## **** Network interfaces private networks (host-only) **** ##
 ## in this block inline args are mandatory
 ## ex: n::args:192.168.40.100|255.255.255.0
-n::args:
+n::args
 
 ## -------------------- Special packages - Must run before anyting  -------------------- ##
 ## Update packages ##
@@ -56,13 +56,13 @@ p:update-yum.sh
 p:net-eth-rules.sh
 
 ## -------------------- Software and util packages  -------------------- ##
-# set hostname supplid in args
+# set hostname supplied as :args:<hostname>|<private ip local addr> 
 s:hostname.sh:args
 
 # create user supplied in args
 s:add-user.sh:args
 
-# Install node by nvm in local user with version supplied in args
+# Install Node.js by nvm in user folder with version specified as :args:<user>[|v0.10.32]
 u:nodejs-nvm.sh:args
 
 # Install node global
@@ -71,8 +71,8 @@ s:nodejs-redhat-global.sh
 # Install heroku toolbelt
 s:heroku.sh
 
-# Install latest version of git
+# Install git version * install latest or specified as [:args:x.x.x]
 s:git.sh
 
-# Install specific version of git supplied in args
-s:git.sh:args
+# Install MongoDB * install 64 bit version or version specified as [:args:[32|64]]
+s:mongodb.sh

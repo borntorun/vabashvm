@@ -13,14 +13,14 @@
 # if an error occurs stops
 #set -e
 
-: ${_vabashvm="\nvabashvm:==>"}
-
+: ${_thispackage="CentOS-7-net-eth-rules"}
+: ${_vabashvm="\nvabashvm:==>$_thispackage:"}
+: ${_thisfilename=${0##*/}}
 printf "${_vabashvm}Running [%s]..." "$0"
 #printf -- "${_vabashvm}[%s]-" $*
 
-: ${_thispackage="centos7-net-eth-rules"}
 
-printf "${_vabashvm}Configuring [%s]..." "$_thispackage"
+printf "${_vabashvm}Configuring..."
 
 : ${_index=0}
 : ${_filerules="/etc/udev/rules.d/99-configeth.rules"}
@@ -43,6 +43,6 @@ do
 	
 done
 
-printf "${_vabashvm}Installation of [%s] terminated.\n" "$_thispackage"
+printf "${_vabashvm}Terminated.[%s]" "$0"
 
 exit 0

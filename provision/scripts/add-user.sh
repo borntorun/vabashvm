@@ -17,17 +17,17 @@
 # if an error occurs stops
 set -e
 
-: ${_vabashvm="\nvabashvm:==>"}
-
+: ${_thispackage="Adding user"}
+: ${_vabashvm="\nvabashvm:==>$_thispackage:"}
+: ${_thisfilename=${0##*/}}
 printf "${_vabashvm}Running [%s]..." "$0"
 #printf -- "${_vabashvm}[%s]-" $*
-: ${vabashvm_thispackage="Adding user"}
 
 if [[ $# -eq 1 ]] && [[ ! -z $1 ]]
 then
 
 	if id -u "$1" >/dev/null 2>&1; then
-		printf "${_vabashvm}User [$1] already exists\n"
+		printf "${_vabashvm}User [$1] already exists.\n"
 	else
 		useradd -m -G wheel "$1"
 		#set passwd equal to login
@@ -64,6 +64,6 @@ else
 	printf "${_vabashvm}User not provided."
 fi
 
-printf "${_vabashvm}[%s] terminated." "$0"
+printf "${_vabashvm}Terminated.[%s]" "$0"
 
 exit 0

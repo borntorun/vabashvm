@@ -16,21 +16,26 @@
 # if an error occurs stops
 #set -e
 
-: ${_vabashvm="\nvabashvm:==>"}
-
+: ${_thispackage="Node.js"}
+: ${_vabashvm="\nvabashvm:==>$_thispackage:"}
+: ${_thisfilename=${0##*/}}
 printf "${_vabashvm}Running [%s]..." "$0"
 #printf -- "${_vabashvm}[%s]-" $*
 
-: ${vabashvm_thispackage="Node.js"}
 
-printf "${_vabashvm}Installing [%s]..." "$vabashvm_thispackage"
+printf "${_vabashvm}Installing..."
 
 curl -L https://rpm.nodesource.com/setup | sudo bash - 1>/dev/null
+[[ ! $? -eq 0 ]] && printf "${_vabashvm}Error downloading rpm package." && exit 0
 
 sudo yum -y install gcc-c++ make 1>/dev/null
+[[ ! $? -eq 0 ]] && printf "${_vabashvm}Error installing dependencies." && exit 0
 
 sudo yum -y install nodejs #1>/dev/null
+[[ ! $? -eq 0 ]] && printf "${_vabashvm}Error installing package." && exit 0
 
-printf "${_vabashvm}Installation of [%s] terminated." "$vabashvm_thispackage"
+printf "${_vabashvm}Package installed"
+
+printf "${_vabashvm}Terminated.[%s]" "$0"
 
 exit 0

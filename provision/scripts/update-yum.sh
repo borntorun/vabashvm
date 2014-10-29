@@ -13,17 +13,17 @@
 ## 		CentOS 7
 ## ======================================================================
 
-: ${_vabashvm="\nvabashvm:==>"}
 
+: ${_thispackage="System update"}
+: ${_vabashvm="\nvabashvm:==>$_thispackage:"}
+: ${_thisfilename=${0##*/}}
 printf "${_vabashvm}Running [%s]..." "$0"
 #printf -- "${_vabashvm}[%s]-" $*
 
-: ${vabashvm_thispackage="System update"}
-
 yum -y update
+[[ ! $? -eq 0 ]] && printf "${_vabashvm}Failed!" && exit 1
 
-[[ ! $? -eq 0 ]] && printf "${_vabashvm}[%s] failed!" "$vabashvm_thispackage" && exit 1
-
-printf "${_vabashvm}[%s] terminated." "$vabashvm_thispackage"
+printf "${_vabashvm}Ok!"
+printf "${_vabashvm}Terminated.[%s]" "$0"
 
 exit 0

@@ -11,9 +11,9 @@ This is intended only for development/testing environments.
 
 Permits:
 
-    - optional use of [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) plugin
-    - provision the machine with any script provided in the [packages file](https://github.com/borntorun/vabashvm/blob/master/provision/packages) 
-    - arguments to be passed to provision scripts
+- optional use of [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) plugin
+- provision the machine with any script provided in the [packages file](https://github.com/borntorun/vabashvm/blob/master/provision/packages) 
+- arguments to be passed to provision scripts
 
 ### Requirements
 

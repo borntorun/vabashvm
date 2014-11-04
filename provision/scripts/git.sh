@@ -10,8 +10,8 @@
 ## $1 - version of git to install
 ## 
 ## This script was tested sucessfully in:
-## - CentOS 6.5
-## - CentOS 7
+## - CentOS 6.5 (64bit))
+## - CentOS 7 (64bit)
 ## ======================================================================
 
 # if an error occurs stops
@@ -65,6 +65,7 @@ then
 	#source /etc/profile.d/z_vabashvm_$_thispackage.sh
 	#this will remove the version that comes by default with centOS
 	#yum -y remove git >/dev/null
+	printf "${_vabashvm}Installed."
 else
 	printf "${_vabashvm}Error installing package."
 fi

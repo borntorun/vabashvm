@@ -10,8 +10,18 @@ heroku.sh			- install heroku toolbelt
 
 git.sh				- install git (chossing version in args ou install latest)
 
-net-eth-rules.sh	- configure network interfaces to use eth* name rules (CentOS 7 systems) 
+net-eth-rules.sh	- configure network interfaces to use eth* name rules (CentOS 7)
 
 hostname.sh			- set hostname on guest system
 
-mongodb.sh		- install MongoDB 32 or 64 (default) bit version
+mongodb.sh  - Install MongoDB 32 or 64 (default) bit version
+
+firewallcmd-port-range.sh   - enable port or port range on the firewall (CentOS 7)
+
+neo4j.sh    - installs Neo4j Database Graph Server
+
+mariadb-centos7-64.sh   - install MariaDB server (MySql)
+
+epel-repo.sh    - Install EPEL release Extra Packages for Enterprise Linux
+
+rpmforge-repo.sh    - Install RPMForge - RPM packages for Red Hat Enterprise Linux (RHEL), CentOS and Scientific Linux

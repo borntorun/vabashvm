@@ -2,7 +2,7 @@
 
 ## ======================================================================
 ## vabashvm - https://github.com/borntorun/vabashvm
-## Author: João Carvalho 
+## Author: JoÃ£o Carvalho
 ## https://raw.githubusercontent.com/borntorun/vabashvm/master/LICENSE
 ## ======================================================================
 ## Install Node.js with Node Version Manager
@@ -12,7 +12,7 @@
 ## $2 - optional - the Node.js version to install (if not present nvm will be installed with no default Node.js version)
 ## 
 ## This script was tested sucessfully in:
-## 		CentOS 7
+## 		CentOS 7 (64bit)
 ## ======================================================================
 
 # if an error occurs stops
@@ -42,7 +42,7 @@ nvminstalled
 if [[ ! ${_nvminstalled} -eq 0 ]] 
 then
         printf "${_vabashvm}Installing NVM..."
-		wget --retry-connrefused -q -O - https://raw.githubusercontent.com/creationix/nvm/master/install.sh | sh -
+		wget --retry-connrefused -q -O - https://raw.githubusercontent.com/creationix/nvm/master/install.sh 2>/dev/null | sh -
 		if [[ $? -eq 0 ]]
 		then
 			source ~/.nvm/nvm.sh

@@ -2,7 +2,7 @@
 
 ## ======================================================================
 ## vabashvm - https://github.com/borntorun/vabashvm
-## Author: Jo„o Carvalho 
+## Author: Jo√£o Carvalho
 ## https://raw.githubusercontent.com/borntorun/vabashvm/master/LICENSE
 ## ======================================================================
 ## This script permits to add a user to the system
@@ -11,7 +11,7 @@
 ##		user will be in wheel group and in the sudoers file
 ## 
 ## This script was tested sucessfully in:
-## 		CentOS 7
+## 		CentOS 7 (64bit)
 ## ======================================================================
 
 # if an error occurs stops

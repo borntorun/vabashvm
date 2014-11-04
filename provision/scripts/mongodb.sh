@@ -2,7 +2,7 @@
 
 ## ======================================================================
 ## vabashvm - https://github.com/borntorun/vabashvm
-## Author: Jo„o Carvalho 
+## Author: Jo√£o Carvalho
 ## https://raw.githubusercontent.com/borntorun/vabashvm/master/LICENSE
 ## ======================================================================
 ## Install MongoDB
@@ -10,7 +10,7 @@
 ## $1 - version to install [32|64 default]
 ## 
 ## This script was tested sucessfully in:
-## 		CentOS 7
+## 		CentOS 7 (64bit)
 ## ======================================================================
 
 # if an error occurs stops

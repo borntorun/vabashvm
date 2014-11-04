@@ -1,13 +1,13 @@
 #!/bin/bash
 ## ======================================================================
 ## vabashvm - https://github.com/borntorun/vabashvm
-## Author: Jo„o Carvalho 
+## Author: Jo√£o Carvalho
 ## https://raw.githubusercontent.com/borntorun/vabashvm/master/LICENSE
 ## ======================================================================
 ## Configure network interfaces to use eth* name rules (CentOS 7 systems) 
 ## 
 ## This script was tested sucessfully in:
-## - CentOS 7
+## - CentOS 7 (64bit)
 ## ======================================================================
 
 # if an error occurs stops

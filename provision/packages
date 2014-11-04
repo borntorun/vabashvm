@@ -1,6 +1,6 @@
 ## ======================================================================
 ## vabashvm - https://github.com/borntorun/vabashvm
-## Author: Jo„o Carvalho 
+## Author: Jo√£o Carvalho
 ## https://raw.githubusercontent.com/borntorun/vabashvm/master/LICENSE
 ## ======================================================================
 ## File with list of packages to install in guest vm
@@ -8,7 +8,7 @@
 ##  +	Package selected to be installed
 ##  *	Package already installed (not yet supportted)
 ##  p	Indicates a 'system Priority' (asap) script need to be run with root priviledges before any others (ex: update script's)
-##  n	Indicates a 'network config' configuration (ex: private network config)
+##  n	Indicates a private network configuration
 ##  s	Indicates a 'System' script need to be run with root priviledges
 ##  u	Indicates a 'User' script need to be run under a user account
 ##  	Colon (:) Is used as separator and MUST exists
@@ -43,21 +43,19 @@
 
 ## **** Network interfaces private networks (host-only) **** ##
 ## in this block inline args are mandatory
-## ex: n::args:192.168.40.100|255.255.255.0
+## args specified as  :args:<ip_address>|<net mask>
+## n::args:192.168.40.100|255.255.255.0
 n::args
 
 ## -------------------- Special packages - Must run before anyting  -------------------- ##
-## Update packages ##
-## *** RPM based packages ***
 
+## *** REDHAT based ***
 p:update-yum.sh
-
 ##change network device names to eth* instead of the default names used by CentOS
 p:net-eth-rules.sh
 
+
 ## -------------------- Software and util packages  -------------------- ##
-# set hostname supplied as :args:<hostname>|<private ip local addr> 
-s:hostname.sh:args
 
 # create user supplied in args
 s:add-user.sh:args
@@ -65,14 +63,35 @@ s:add-user.sh:args
 # Install Node.js by nvm in user folder with version specified as :args:<user>[|v0.10.32]
 u:nodejs-nvm.sh:args
 
-# Install node global
-s:nodejs-redhat-global.sh
-
 # Install heroku toolbelt
 s:heroku.sh
+
+## *** REDHAT based ***
+
+# set hostname supplied as :args:<hostname>|<private ip local addr>
+s:hostname.sh:args
+
+# enable ports in firewall supplied as :args:<protocol>|<port start range>[|<port final range>]
+s:firewallcmd-port-range.sh:args
+
+# Install node global
+s:nodejs-redhat-global.sh
 
 # Install git version * install latest or specified as [:args:x.x.x]
 s:git.sh
 
+# Install Neo4j * see script for version
+s:neo4j.sh
+
 # Install MongoDB * install 64 bit version or version specified as [:args:[32|64]]
 s:mongodb.sh
+
+# Install MariaDB * args specified as :args:<version>|<root password>[<user to create>|<password of user>]
+# versions: 5.5 | 10.0
+s:mariadb-centos7-64.sh:args
+
+# Install EPEL repo version specified as :args[:<6|7>]
+s:epel-repo.sh:args
+
+# Install RPMForge repo version specified as :args[:<6|7>]
+s:rpmforge-repo.sh:args

@@ -2,7 +2,7 @@
 
 ## ======================================================================
 ## vabashvm - https://github.com/borntorun/vabashvm
-## Author: Jo„o Carvalho 
+## Author: Jo√£o Carvalho
 ## https://raw.githubusercontent.com/borntorun/vabashvm/master/LICENSE
 ## ======================================================================
 
@@ -57,13 +57,23 @@ printdebug ()
 {
 	printf "%-35s:%s\n" "global_path_log" "$global_path_log"
 	printf "%-35s:%s\n" "global_path_script"  "$global_path_script"
+	printf "%-35s:%s\n" "global_path_utilscripts" "$global_path_utilscripts"
+
 	printf "%-35s:%s\n" "global_provision_path"  "$global_provision_path"
+	
+	printf "%-35s:%s\n" "global_provision_path_scripts" "$global_provision_path_scripts"
+	printf "%-35s:%s\n" "global_provision_filepackages" "$global_provision_filepackages"
+	printf "%-35s:%s\n" "global_provision_dummy_file" "$global_provision_dummy_file"
+	printf "%-35s:%s\n" "global_provision_remotepath" "$global_provision_remotepath"
+	
 	printf "%-35s:%s\n" "global_path_local" "$global_path_local"
 	printf "%-35s:%s\n" "global_vms_path"  "$global_vms_path"
 	printf "%-35s:%s\n" "global_vm_path" "$global_vm_path"
 	printf "%-35s:%s\n" "global_vm_path_provision" "$global_vm_path_provision"
 	printf "%-35s:%s\n" "global_vm_path_provision_scripts" "$global_vm_path_provision_scripts"
 	printf "%-35s:%s\n" "global_vm_filepackages" "$global_vm_filepackages"
+
+	printf "%-35s:%s\n" "global_config_private_network" "$global_config_private_network"
 }
 if [[ ! -d $global_path_log ]]
 then
@@ -222,6 +232,8 @@ ioutil_set_package "$script_name"
 test_vagrantbox_exists
 
 test_vbguestplugin_exists
+
+#printdebug
 
 report_wait_confirmation
 

@@ -7,8 +7,8 @@
 ## Install heroku toolbelt 
 ## 
 ## This script was tested sucessfully in:
-## - CentOS 6.5
-## - CentOS 7
+## - CentOS 6.5 (64bit)
+## - CentOS 7 (64bit)
 ## ======================================================================
 
 # if an error occurs stops
@@ -34,9 +34,9 @@ rm -f install-heroku.sh
 
 which wget >/dev/null 2>&1
 if [[ ! $? -eq 0 ]]; then
-	curl -s -o install-heroku.sh $_urlheroku
+	curl -s -o install-heroku.sh $_urlheroku >/dev/null 2>/dev/null
 else
-	wget -qc -O install-heroku.sh $_urlheroku
+	wget -qc -O install-heroku.sh $_urlheroku >/dev/null 2>/dev/null
 fi
 ## insert a test in heroku script to validate the installation script and then calls script
 [[ $? -eq 0 ]] && sed -i "s|^SCRIPT$|SCRIPT\\n[[ ! \$? -eq 0 ]] \&\& echo \"Error in installation.\" \&\& exit 1|" install-heroku.sh && sh install-heroku.sh
@@ -47,6 +47,7 @@ echo "export PATH=${_installdir}:\$PATH" >> /etc/profile.d/z_vabashvm_$_thispack
 
 rm -f install-heroku.sh
 
+printf "${_vabashvm}Installed."
 printf "${_vabashvm}Terminated.[%s]" "$0"
 
 exit 0

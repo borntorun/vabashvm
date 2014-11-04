@@ -86,12 +86,18 @@ s:neo4j.sh
 # Install MongoDB * install 64 bit version or version specified as [:args:[32|64]]
 s:mongodb.sh
 
-# Install MariaDB * args specified as :args:<version>|<root password>[<user to create>|<password of user>]
+# Install MariaDB * args specified as :args:<version>|<root password>[<user to create>|<password of user>[|<ipmask_remote_net_access>]]
 # versions: 5.5 | 10.0
+# the following example install version 10.0 set root pwd=Passw0rd and add a user=john with pwd=Passw0rd with permission to remote access from the network 192.169.40.xxx
+#       ex: :args:10.0|Passw0rd|john|Passw0rd|192.168.40.%
 s:mariadb-centos7-64.sh:args
+
+# Install httpd - Apache Web Server
+s:httpd-centos7-64.sh
 
 # Install EPEL repo version specified as :args[:<6|7>]
 s:epel-repo.sh:args
 
 # Install RPMForge repo version specified as :args[:<6|7>]
 s:rpmforge-repo.sh:args
+

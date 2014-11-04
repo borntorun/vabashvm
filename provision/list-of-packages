@@ -2,13 +2,13 @@ update-yum.sh		- to update the guest system
 
 add-user.sh			- to add a user to the system
 
-nodejs-nvm.sh		- install Node.js with Node Version Manager
+nodejs-nvm.sh		- Install Node.js with Node Version Manager
 
-nodejs-redhat-global.sh		- install Node.js global via packager manager
+nodejs-redhat-global.sh		- Install Node.js global via packager manager
 
-heroku.sh			- install heroku toolbelt
+heroku.sh			- Install heroku toolbelt
 
-git.sh				- install git (chossing version in args ou install latest)
+git.sh				- Install git (chossing version in args ou Install latest)
 
 net-eth-rules.sh	- configure network interfaces to use eth* name rules (CentOS 7)
 
@@ -18,9 +18,11 @@ mongodb.sh  - Install MongoDB 32 or 64 (default) bit version
 
 firewallcmd-port-range.sh   - enable port or port range on the firewall (CentOS 7)
 
-neo4j.sh    - installs Neo4j Database Graph Server
+neo4j.sh    - Installs Neo4j Database Graph Server
 
-mariadb-centos7-64.sh   - install MariaDB server (MySql)
+mariadb-centos7-64.sh   - Install MariaDB server (MySql)
+
+httpd-centos7-64.sh - Install httpd - Apache Web Server
 
 epel-repo.sh    - Install EPEL release Extra Packages for Enterprise Linux
 

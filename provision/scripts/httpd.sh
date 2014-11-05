@@ -22,12 +22,10 @@ printf "${_vabashvm}Running [%s]..." "$0"
 printf "${_vabashvm}Installing..."
 
 yum -y install httpd openssl mod_ssl >/dev/null
-[[ $? -eq 0 ]] && printf "${_vabashvm}Configuring %s service..." "$_thispackage" && systemctl restart httpd && systemctl enable httpd
+[[ $? -eq 0 ]] && httpd -v && systemctl restart httpd >/dev/null && systemctl enable httpd >/dev/null
 
 # configure firewall
-[[ $? -eq 0 ]] && printf "${_vabashvm}Configuring firewall..." && firewall-cmd --add-service=http --permanent >/dev/null && firewall-cmd --add-service=https --permanent >/dev/null && firewall-cmd --reload >/dev/null
-
-httpd -v
+[[ $? -eq 0 ]] && printf "${_vabashvm}Instalation ok." && printf "${_vabashvm}Configuring firewall..." && firewall-cmd --add-service=http --permanent >/dev/null && firewall-cmd --add-service=https --permanent >/dev/null && firewall-cmd --reload >/dev/null
 
 printf "${_vabashvm}Terminated.[%s]" "$0"
 printf "\n"

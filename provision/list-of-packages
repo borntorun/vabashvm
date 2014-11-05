@@ -1,5 +1,13 @@
 update-yum.sh		- to update the guest system
 
+epel-repo.sh    - Install EPEL release Extra Packages for Enterprise Linux
+
+rpmforge-repo.sh    - Install RPMForge - RPM packages for Red Hat Enterprise Linux (RHEL), CentOS and Scientific Linux
+
+net-eth-rules.sh	- configure network interfaces to use eth* name rules (CentOS 7)
+
+hostname.sh			- set hostname on guest system
+
 add-user.sh			- to add a user to the system
 
 nodejs-nvm.sh		- Install Node.js with Node Version Manager
@@ -10,10 +18,6 @@ heroku.sh			- Install heroku toolbelt
 
 git.sh				- Install git (chossing version in args ou Install latest)
 
-net-eth-rules.sh	- configure network interfaces to use eth* name rules (CentOS 7)
-
-hostname.sh			- set hostname on guest system
-
 mongodb.sh  - Install MongoDB 32 or 64 (default) bit version
 
 firewallcmd-port-range.sh   - enable port or port range on the firewall (CentOS 7)
@@ -22,8 +26,6 @@ neo4j.sh    - Installs Neo4j Database Graph Server
 
 mariadb-centos7-64.sh   - Install MariaDB server (MySql)
 
-httpd-centos7-64.sh - Install httpd - Apache Web Server
+httpd.sh - Install httpd - Apache Web Server
 
-epel-repo.sh    - Install EPEL release Extra Packages for Enterprise Linux
-
-rpmforge-repo.sh    - Install RPMForge - RPM packages for Red Hat Enterprise Linux (RHEL), CentOS and Scientific Linux
+php-onhttpd-centos7.sh  - Installs php

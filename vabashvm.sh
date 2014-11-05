@@ -538,6 +538,6 @@ vagrant_secondup
 
 vagrant_final
 
-ioutil_exit_onsucess "Machine [%s] is running..." "$vmname"
+#ioutil_exit_onsucess "Machine [%s] is running..." "$vmname"
 
 exit 0

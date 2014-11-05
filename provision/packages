@@ -44,18 +44,27 @@
 ## **** Network interfaces private networks (host-only) **** ##
 ## in this block inline args are mandatory
 ## args specified as  :args:<ip_address>|<net mask>
-## n::args:192.168.40.100|255.255.255.0
+## ex: +n::args:192.168.40.100|255.255.255.0
 n::args
 
 ## -------------------- Special packages - Must run before anyting  -------------------- ##
 
 ## *** REDHAT based ***
 p:update-yum.sh
+
 ##change network device names to eth* instead of the default names used by CentOS
 p:net-eth-rules.sh
 
-
 ## -------------------- Software and util packages  -------------------- ##
+
+# Install EPEL repo version specified as :args[:<6|7>]
+s:epel-repo.sh:args
+
+# Install RPMForge repo version specified as :args[:<6|7>]
+s:rpmforge-repo.sh:args
+
+# set hostname supplied as :args:<hostname>|<private ip local addr>
+s:hostname.sh:args
 
 # create user supplied in args
 s:add-user.sh:args
@@ -68,14 +77,11 @@ s:heroku.sh
 
 ## *** REDHAT based ***
 
-# set hostname supplied as :args:<hostname>|<private ip local addr>
-s:hostname.sh:args
-
 # enable ports in firewall supplied as :args:<protocol>|<port start range>[|<port final range>]
 s:firewallcmd-port-range.sh:args
 
 # Install node global
-s:nodejs-redhat-global.sh
+s:nodejs-global.sh
 
 # Install git version * install latest or specified as [:args:x.x.x]
 s:git.sh
@@ -89,15 +95,11 @@ s:mongodb.sh
 # Install MariaDB * args specified as :args:<version>|<root password>[<user to create>|<password of user>[|<ipmask_remote_net_access>]]
 # versions: 5.5 | 10.0
 # the following example install version 10.0 set root pwd=Passw0rd and add a user=john with pwd=Passw0rd with permission to remote access from the network 192.169.40.xxx
-#       ex: :args:10.0|Passw0rd|john|Passw0rd|192.168.40.%
+# +s:mariadb-centos7-64.sh:args:10.0|Passw0rd|john|Passw0rd|192.168.40.%
 s:mariadb-centos7-64.sh:args
 
 # Install httpd - Apache Web Server
-s:httpd-centos7-64.sh
+s:httpd.sh
 
-# Install EPEL repo version specified as :args[:<6|7>]
-s:epel-repo.sh:args
-
-# Install RPMForge repo version specified as :args[:<6|7>]
-s:rpmforge-repo.sh:args
-
+# Install php
+s:php-onhttpd.sh

@@ -87,47 +87,54 @@ EOF
         # install it
         yum clean all
         printf "${_vabashvm}Installing..."
+
+        #rpm --import https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+
         yum -y install MariaDB-server MariaDB-client >/dev/null
 
-        ##bind ip
-        [[ $? -eq 0 ]] && sed -i "s|^\[mysqld\]$|\[mysqld\]\nbind-address = 127.0.0.1|"  /etc/my.cnf.d/server.cnf
-
-        [[ $? -eq 0 ]] && systemctl restart mysql
-        [[ $? -eq 0 ]] && systemctl enable mysql
-        [[ $? -eq 0 ]] && systemctl status mysql 2>/dev/null | grep "Active: active" >/dev/null
-        [[ $? -eq 0 ]] && printf "${_vabashvm}Installation succeded." || printf "${_vabashvm}Error: Possible error in installation."
-
-        printf "${_vabashvm}Configuring..."
-
-
-        mysqladmin -u root password "$_root_pwd" 2>/dev/null
-        mysql -u root -p"$_root_pwd" -e "UPDATE mysql.user SET Password=PASSWORD('$_root_pwd') WHERE User='root'"
-        [[ $? -eq 0 ]] && mysql -u root -p"$_root_pwd" -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')"
-        [[ $? -eq 0 ]] && mysql -u root -p"$_root_pwd" -e "DELETE FROM mysql.user WHERE User=''"
-        [[ $? -eq 0 ]] && mysql -u root -p"$_root_pwd" -e "FLUSH PRIVILEGES"
-
-        if [[ $3 && $4 ]]
+        if [[ $? -eq 0 ]]
         then
-            [[ $? -eq 0 ]] && mysql -u root -p"$_root_pwd" -e "GRANT ALL PRIVILEGES ON *.* TO '$_user_admin'@'localhost' IDENTIFIED BY '$_user_admin_pwd' WITH GRANT OPTION"
-            [[ $? -eq 0 ]] && mysql -u root -p"$_root_pwd" -e "GRANT ALL PRIVILEGES ON *.* TO '$_user_admin'@'127.0.0.1' IDENTIFIED BY '$_user_admin_pwd' WITH GRANT OPTION"
-            [[ $? -eq 0 ]] && mysql -u root -p"$_root_pwd" -e "GRANT ALL PRIVILEGES ON *.* TO '$_user_admin'@'::1' IDENTIFIED BY '$_user_admin_pwd' WITH GRANT OPTION"
-            if [[ $? -eq 0 ]] && [[ $5 ]]
-            then
-                mysql -u root -p"$_root_pwd" -e "GRANT ALL PRIVILEGES ON *.* TO '$_user_admin'@'$_remote_net' IDENTIFIED BY '$_user_admin_pwd' WITH GRANT OPTION"
-                [[ $? -eq 0 ]] && sed -i "s|^.*bind-address|#bind-address|"  /etc/my.cnf.d/server.cnf
-            fi
+            ##bind ip
+            sed -i "s|^\[mysqld\]$|\[mysqld\]\nbind-address = 127.0.0.1|"  /etc/my.cnf.d/server.cnf
+            [[ $? -eq 0 ]] && systemctl restart mysql && systemctl enable mysql
+            [[ $? -eq 0 ]] && systemctl status mysql 2>/dev/null | grep "Active: active" >/dev/null
+            [[ $? -eq 0 ]] && printf "${_vabashvm}Installation succeded." && {
+
+                printf "${_vabashvm}Configuring..."
+
+                mysqladmin -u root password "$_root_pwd" 2>/dev/null
+                mysql -u root -p"$_root_pwd" -e "UPDATE mysql.user SET Password=PASSWORD('$_root_pwd') WHERE User='root'"
+                [[ $? -eq 0 ]] && mysql -u root -p"$_root_pwd" -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1')"
+                [[ $? -eq 0 ]] && mysql -u root -p"$_root_pwd" -e "DELETE FROM mysql.user WHERE User=''"
+                [[ $? -eq 0 ]] && mysql -u root -p"$_root_pwd" -e "FLUSH PRIVILEGES"
+
+                if [[ $3 && $4 ]]
+                then
+                    [[ $? -eq 0 ]] && mysql -u root -p"$_root_pwd" -e "GRANT ALL PRIVILEGES ON *.* TO '$_user_admin'@'localhost' IDENTIFIED BY '$_user_admin_pwd' WITH GRANT OPTION"
+                    [[ $? -eq 0 ]] && mysql -u root -p"$_root_pwd" -e "GRANT ALL PRIVILEGES ON *.* TO '$_user_admin'@'127.0.0.1' IDENTIFIED BY '$_user_admin_pwd' WITH GRANT OPTION"
+                    [[ $? -eq 0 ]] && mysql -u root -p"$_root_pwd" -e "GRANT ALL PRIVILEGES ON *.* TO '$_user_admin'@'::1' IDENTIFIED BY '$_user_admin_pwd' WITH GRANT OPTION"
+                    if [[ $? -eq 0 ]] && [[ $5 ]]
+                    then
+                        mysql -u root -p"$_root_pwd" -e "GRANT ALL PRIVILEGES ON *.* TO '$_user_admin'@'$_remote_net' IDENTIFIED BY '$_user_admin_pwd' WITH GRANT OPTION"
+                        [[ $? -eq 0 ]] && sed -i "s|^.*bind-address|#bind-address|"  /etc/my.cnf.d/server.cnf
+                    fi
+                fi
+
+                [[ $? -eq 0 ]] && firewall-cmd --permanent --add-port=3306/tcp >/dev/null && firewall-cmd --reload >/dev/null && systemctl restart mysql
+
+                [[ $? -eq 0 ]] && printf "${_vabashvm}Configuring ok."
+
+                #echo
+                #echo ======================================================
+                #mysql -u "$_user_admin" -p"$_user_admin_pwd" -e "status"
+                #echo ======================================================
+                #mysql -u root -p"$_root_pwd" -e "status"
+                #echo ======================================================
+
+            } || printf "${_vabashvm}Error: Possible error in installation."
+
+
         fi
-
-        [[ $? -eq 0 ]] && firewall-cmd --permanent --add-port=3306/tcp >/dev/null && firewall-cmd --reload >/dev/null && systemctl restart mysql
-
-        [[ $? -eq 0 ]] && printf "${_vabashvm}Configuring ok."
-
-        #echo
-        #echo ======================================================
-        #mysql -u "$_user_admin" -p"$_user_admin_pwd" -e "status"
-        #echo ======================================================
-        #mysql -u root -p"$_root_pwd" -e "status"
-        #echo ======================================================
     else
         printf "${_vabashvm}Could not install."
     fi

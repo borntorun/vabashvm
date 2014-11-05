@@ -43,7 +43,8 @@ fi
 [[ ! $? -eq 0 ]] && printf "${_vabashvm}Not installed." && exit 0
 
 rm -f z_vabashvm_$_thispackage.sh
-echo "export PATH=${_installdir}:\$PATH" >> /etc/profile.d/z_vabashvm_$_thispackage.sh
+
+echo "pathmunge ${_installdir}"$'\n'"export PATH" >> /etc/profile.d/z_vabashvm_$_thispackage.sh
 
 rm -f install-heroku.sh
 

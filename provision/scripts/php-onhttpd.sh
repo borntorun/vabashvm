@@ -1,28 +1,30 @@
 #!/bin/bash
-
 ## ======================================================================
 ## vabashvm - https://github.com/borntorun/vabashvm
-## Author: João Carvalho
+## Author: João Carvalho 
 ## https://raw.githubusercontent.com/borntorun/vabashvm/master/LICENSE
 ## ======================================================================
-## Install Node.js global via packager manager
-## RHEL, CentOS and Fedora
-## as described in https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager#enterprise-linux-and-fedora
+## Install php (for httpd)
 ##
 ## This script was tested sucessfully in:
-## 		CentOS 7 (64bit)
+## - CentOS 7 (64bit)
 ## ======================================================================
 
+# if an error occurs stops
+#set -e
 
-: ${_thispackage="System update"}
+: ${_thispackage="php"}
 : ${_vabashvm="\nvabashvm:==>$_thispackage:"}
 : ${_thisfilename=${0##*/}}
 printf "${_vabashvm}Running [%s]..." "$0"
 #printf -- "${_vabashvm}[%s]-" $*
 
-yum -y update >/dev/null
-[[ $? -eq 0 ]] && printf "${_vabashvm}Ok!" || printf "${_vabashvm}Failed!"
+printf "${_vabashvm}Installing..."
+
+yum -y install php php-cli php-fpm php-intl php-mysqlnd php-pgsql php-pecl-mongo >/dev/null
+([[ $? -eq 0 ]] && php -v && printf "${_vabashvm}Installed.") || printf "${_vabashvm}Not installed."
 
 printf "${_vabashvm}Terminated.[%s]" "$0"
+printf "\n"
 
 exit 0

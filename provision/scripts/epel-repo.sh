@@ -18,23 +18,26 @@
 printf "${_vabashvm}Running [%s]..." "$0"
 #printf -- "${_vabashvm}[%s]-" $*
 
-: ${_version="$1"}
-: ${_arch="$(uname -i)"}
 
-: ${_isok=0}
-case "$_version" in
-    "6"|"7")
-        ;;
-    *)
-        _isok=1
-        ;;
-esac
+yum repolist all | grep -q epel
+[[ ! $? -eq 0 ]] && {
 
-if [[ _isok -eq 0 ]]
-then
-    printf "${_vabashvm}Preparing to install version epel-%s %s..." "$_version" "$_arch"
+    : ${_version="$1"}
+    : ${_arch="$(uname -i)"}
 
-    cat <<EOF >/etc/yum.repos.d/epel-bootstrap.repo
+    : ${_isok=0}
+    case "$_version" in
+        "6"|"7")
+            ;;
+        *)
+            _isok=1
+            ;;
+    esac
+
+    [[ _isok -eq 0 ]] && {
+        printf "${_vabashvm}Preparing to install version epel-%s %s..." "$_version" "$_arch"
+
+        cat <<EOF >/etc/yum.repos.d/epel-bootstrap.repo
 [epel]
 name=Bootstrap EPEL
 mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=epel-${_version}&arch=${_arch}
@@ -42,13 +45,13 @@ failovermethod=priority
 enabled=0
 gpgcheck=0
 EOF
+        yum --enablerepo=epel -y install epel-release >/dev/null
+        rm -f /etc/yum.repos.d/epel-bootstrap.repo
+        yum repolist | grep "epel/$_arch" >/dev/null
 
-    yum --enablerepo=epel -y install epel-release >/dev/null
-    rm -f /etc/yum.repos.d/epel-bootstrap.repo
-    yum repolist | grep "epel/$_arch" >/dev/null
-else
-    printf "${_vabashvm}Invalid parameteres."
-fi
+    } || printf "${_vabashvm}Invalid parameteres."
+
+} || printf "${_vabashvm}Seems to be already installed.Nothing to do."
 
 printf "${_vabashvm}Terminated.[%s]" "$0"
 printf "\n"

@@ -22,20 +22,26 @@
 printf "${_vabashvm}Running [%s]..." "$0"
 #printf -- "${_vabashvm}[%s]-" $*
 
+printf "${_vabashvm}Installing nodesource repo..."
+curl -L https://rpm.nodesource.com/setup 2>/dev/null | sudo bash - >/dev/null
+[[ $? -eq 0 ]] && {
+    printf "${_vabashvm}Installing dependencies..."
 
-printf "${_vabashvm}Installing..."
+    yum -y install gcc-c++ make 1>/dev/null
+    [[ $? -eq 0 ]] && {
+        printf "${_vabashvm}Installing package..."
 
-curl -L https://rpm.nodesource.com/setup | sudo bash - 1>/dev/null
-[[ ! $? -eq 0 ]] && printf "${_vabashvm}Error downloading rpm package." && exit 0
+        yum -y install nodejs 1>/dev/null
+        [[ $? -eq 0 ]] && printf "${_vabashvm}Package installed" || printf "${_vabashvm}Error installing package."
 
-sudo yum -y install gcc-c++ make 1>/dev/null
-[[ ! $? -eq 0 ]] && printf "${_vabashvm}Error installing dependencies." && exit 0
+    } || printf "${_vabashvm}Error installing dependencies."
 
-sudo yum -y install nodejs #1>/dev/null
-[[ ! $? -eq 0 ]] && printf "${_vabashvm}Error installing package." && exit 0
-
-printf "${_vabashvm}Package installed"
+} || printf "${_vabashvm}Error downloading rpm package."
 
 printf "${_vabashvm}Terminated.[%s]" "$0"
 
 exit 0
+
+
+
+

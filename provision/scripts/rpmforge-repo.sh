@@ -18,28 +18,30 @@
 printf "${_vabashvm}Running [%s]..." "$0"
 #printf -- "${_vabashvm}[%s]-" $*
 
-: ${_version="$1"}
-: ${_arch="$(uname -i)"}
+yum repolist all | grep -q rpmforge
+[[ ! $? -eq 0 ]] && {
 
-: ${_isok=0}
-case "$_version" in
-    "6"|"7")
-        ;;
-    *)
-        _isok=1
-        ;;
-esac
+    : ${_version="$1"}
+    : ${_arch="$(uname -i)"}
 
-if [[ _isok -eq 0 ]]
-then
-    printf "${_vabashvm}Preparing to install version rpmforge-%s %s..." "$_version" "$_arch"
+    : ${_isok=0}
+    case "$_version" in
+        "6"|"7")
+            ;;
+        *)
+            _isok=1
+            ;;
+    esac
 
-    rpm --import http://apt.sw.be/RPM-GPG-KEY.dag.txt
-    yum -y install http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el${_version}.rf.${_arch}.rpm >/dev/null
+    [[ _isok -eq 0 ]] && {
+        printf "${_vabashvm}Preparing to install version rpmforge-%s %s..." "$_version" "$_arch"
 
-else
-    printf "${_vabashvm}Invalid parameteres."
-fi
+        rpm --import http://apt.sw.be/RPM-GPG-KEY.dag.txt
+        yum -y install http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el${_version}.rf.${_arch}.rpm >/dev/null
+
+    } || printf "${_vabashvm}Invalid parameteres."
+
+} || printf "${_vabashvm}Seems to be already installed.Nothing to do."
 
 printf "${_vabashvm}Terminated.[%s]" "$0"
 printf "\n"

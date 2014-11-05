@@ -50,8 +50,8 @@ then
     printf "${_vabashvm}Downloading %s package ...\n" "$_thispackage"
     curl -O "$_urltar" >/dev/null 2>/dev/null && tar -xzf "${_installpack}-unix.tar.gz" && mv "$_installpack" neo4j && cd neo4j
 
-    if [[ $? -eq 0 ]]
-    then
+    [[ $? -eq 0 ]] && {
+
         printf "${_vabashvm}Installing ..."
         ## Installl pack
         echo $'\n\n'"Y"$'\n' | ./bin/neo4j-installer install >/dev/null
@@ -62,7 +62,8 @@ then
         ## Start service
         systemctl start neo4j-service.service >/dev/null 2>/dev/null
         ## Path to profile
-        echo "export PATH=${_installdir}:\$PATH" >> /etc/profile.d/z_vabashvm_${_thispackage}.sh
+        echo "pathmunge ${_installdir}"$'\n'"export PATH" >> /etc/profile.d/z_vabashvm_${_thispackage}.sh
+
         ## Test service
         systemctl status neo4j-service.service 2>/dev/null | grep "Active: active" >/dev/null
         [[ $? -eq 0 ]] && printf "${_vabashvm}Installation succeded." || printf "${_vabashvm}Error: Possible error in installation."
@@ -71,7 +72,7 @@ then
         firewall-cmd --permanent --add-port=7474/tcp >/dev/null && firewall-cmd --reload >/dev/null
         [[ $? -eq 0 ]] && printf "${_vabashvm}Configured firewall for neo4j port:7474"
 
-    fi
+    }
 else
     printf "${_vabashvm}%s already installed. Nothing to do." "$_thispackage" && exit 0
 fi

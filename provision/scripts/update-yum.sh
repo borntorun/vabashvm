@@ -28,18 +28,6 @@ yum -y update >/dev/null
 	(yum history info $_numero | grep -qi "Install kernel" || yum history info $_numero | grep -qi "Updated kernel") && {
 		output "Kernel updated. Installing kernel-devel..."
 		yum -y install gcc kernel-devel kernel-headers >/dev/null
-
-#cat <<EOF >xpto-vabashvm-provision-000-asap-vboxguestadditions.sh
-#: \${_thispackage="Setup vboxguestaddtions"}
-#: \${_thisfilename=\${0##*/}}
-#printf "\nvabashvm:\$(date +"%H:%M:%S"):==>\$_thispackage:Running [%s]..." "\$0"
-#output()
-#{
-#	(printf "\n\t\$(date +"%H:%M:%S"):==>\$_thispackage:";	printf "\$@")
-#}
-#output "Setup VirtualBox Guest Additions..."
-#\$(find / -name vboxadd | grep "init/vboxadd") setup 2>/dev/null
-#EOF
 	}
 }
 

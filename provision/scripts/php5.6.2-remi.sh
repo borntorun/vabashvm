@@ -4,7 +4,7 @@
 ## Author: João Carvalho 
 ## https://raw.githubusercontent.com/borntorun/vabashvm/master/LICENSE
 ## ======================================================================
-## Install php - verion 5.6 inluded in distribution Remi repo
+## Install php - version 5.6 inluded in Remi repo
 ##
 ## This script was tested sucessfully in:
 ## - CentOS 7 (64bit)

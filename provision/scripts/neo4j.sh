@@ -17,67 +17,74 @@
 #set -e
 
 : ${_thispackage="neo4j"}
-: ${_version="2.1.5"}
-: ${_vabashvm="\nvabashvm:==>$_thispackage:"}
 : ${_thisfilename=${0##*/}}
-printf "${_vabashvm}Running [%s]..." "$0"
-#printf -- "${_vabashvm}[%s]-" $*
+printf "\nvabashvm:$(date +"%H:%M:%S"):==>$_thispackage:Running [%s]..." "$0"
+#printf -- "[%s]-" $*
+output()
+{
+	(printf "\n\t$(date +"%H:%M:%S"):==>$_thispackage:";	printf "$@")
+}
+
+
+: ${_version="2.1.5"}
 
 systemctl status neo4dj-service.service 2>/dev/null | grep "Loaded: loaded" >/dev/null
-if [[ ! $? -eq 0 ]]
-then
-    printf "${_vabashvm}Preparing to install version %s..." "$_version"
-    ## Get and install neo4j
-    : ${_installpack="neo4j-community-${_version}"}
-    : ${_urltar="http://dist.neo4j.org/${_installpack}-unix.tar.gz"}
-    : ${_installdir=/opt/neo4j/bin}
+[[ $? -eq 0 ]] && output "Already installed. Nothing to do." || {
+	output "Preparing to install version %s..." "$_version"
+	## Get and install neo4j
+	: ${_installpack="neo4j-community-${_version}"}
+	: ${_urltar="http://dist.neo4j.org/${_installpack}-unix.tar.gz"}
+	: ${_installdir=/opt/neo4j/bin}
 
-    #echo "$_installpack"
-    #echo "$_urltar"
-    #echo "$_installdir"
-    #exit
+	#echo "$_installpack"
+	#echo "$_urltar"
+	#echo "$_installdir"
+	#exit
 
+	output "Installing java opensdk 1.7 if needed..."
+	yum -y install java*1.7*openjdk* >/dev/null
 
-    printf "${_vabashvm}Installing java opensdk 1.7 if needed..."
-    yum -y install java*1.7*openjdk* >/dev/null
+	# dependencies
+	yum -y install lsof >/dev/null
 
-    ## restarting firewall to prevent possible error https://bugzilla.redhat.com/show_bug.cgi?id=1099031
-    systemctl restart firewalld
+	## restarting firewall to prevent possible error https://bugzilla.redhat.com/show_bug.cgi?id=1099031
+	systemctl restart firewalld
 
-    cd /opt
+	## Get pack untar it and cd to folder
+	output "Downloading %s package ...\n" "$_thispackage"
+	##
+	cd /opt
+	##
+	curl -O "$_urltar" >/dev/null 2>/dev/null && tar -xzf "${_installpack}-unix.tar.gz" && mv "$_installpack" neo4j && cd neo4j
 
-    ## Get pack untar it and cd to folder
-    printf "${_vabashvm}Downloading %s package ...\n" "$_thispackage"
-    curl -O "$_urltar" >/dev/null 2>/dev/null && tar -xzf "${_installpack}-unix.tar.gz" && mv "$_installpack" neo4j && cd neo4j
+	[[ ! $? -eq 0 ]] && output "Error downloading or uncompressing package" || {
 
-    [[ $? -eq 0 ]] && {
+		output "Installing ..."
+		## Installl pack
+		echo $'\n\n'"Y"$'\n' | ./bin/neo4j-installer install >/dev/null
 
-        printf "${_vabashvm}Installing ..."
-        ## Installl pack
-        echo $'\n\n'"Y"$'\n' | ./bin/neo4j-installer install >/dev/null
-        ## Permits remote access
-        sed -i "s|^#org.neo4j.server.webserver.address=|org.neo4j.server.webserver.address=|"  conf/neo4j-server.properties
-        ## Installs as a service
-        systemctl enable neo4j-service.service >/dev/null 2>/dev/null
-        ## Start service
-        systemctl start neo4j-service.service >/dev/null 2>/dev/null
-        ## Path to profile
-        echo "pathmunge ${_installdir}"$'\n'"export PATH" >> /etc/profile.d/z_vabashvm_${_thispackage}.sh
+		[[ ! $? -eq 0 ]] && output "Error installing." || {
+			output "Installed."
+			## Permits remote access
+			sed -i "s|^#org.neo4j.server.webserver.address=|org.neo4j.server.webserver.address=|" conf/neo4j-server.properties
+			## Installs as a service ## Start service
+			systemctl enable neo4j-service.service >/dev/null
+			[[ $? -eq 0 ]] && output "Service Enabled."
+			systemctl start neo4j-service.service >/dev/null
+			[[ $? -eq 0 ]] && output "Service Started."
+			## Path to profile
+			echo "pathmunge ${_installdir}"$'\n'"export PATH" >> /etc/profile.d/z_vabashvm_${_thispackage}.sh
+			## Open firewall port
+			firewall-cmd --permanent --add-port=7474/tcp >/dev/null && firewall-cmd --reload >/dev/null
+			[[ $? -eq 0 ]] && output "Firewall configured for neo4j port:7474"  || output "Error configuring firewall."
+			## Test service
+			systemctl restart neo4j-service.service >/dev/null
+			systemctl status neo4j-service.service | grep "Active: active"
+			[[ $? -eq 0 ]] && output "Service running." || output "Error: Service not running."
+		}
+	}
+}
 
-        ## Test service
-        systemctl status neo4j-service.service 2>/dev/null | grep "Active: active" >/dev/null
-        [[ $? -eq 0 ]] && printf "${_vabashvm}Installation succeded." || printf "${_vabashvm}Error: Possible error in installation."
-
-        ## Open firewall port
-        firewall-cmd --permanent --add-port=7474/tcp >/dev/null && firewall-cmd --reload >/dev/null
-        [[ $? -eq 0 ]] && printf "${_vabashvm}Configured firewall for neo4j port:7474"
-
-    }
-else
-    printf "${_vabashvm}%s already installed. Nothing to do." "$_thispackage" && exit 0
-fi
-
-printf "${_vabashvm}Terminated.[%s]" "$0"
-printf "\n"
+printf "\nvabashvm:$(date +"%H:%M:%S"):==>$_thispackage:End [%s]." "$0"
 
 exit 0

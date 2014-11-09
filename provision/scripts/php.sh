@@ -4,7 +4,7 @@
 ## Author: João Carvalho 
 ## https://raw.githubusercontent.com/borntorun/vabashvm/master/LICENSE
 ## ======================================================================
-## Install php (for httpd)
+## Install php - verion inluded in distribution repos ##
 ##
 ## This script was tested sucessfully in:
 ## - CentOS 7 (64bit)
@@ -14,17 +14,20 @@
 #set -e
 
 : ${_thispackage="php"}
-: ${_vabashvm="\nvabashvm:==>$_thispackage:"}
 : ${_thisfilename=${0##*/}}
-printf "${_vabashvm}Running [%s]..." "$0"
-#printf -- "${_vabashvm}[%s]-" $*
+printf "\nvabashvm:$(date +"%H:%M:%S"):==>$_thispackage:Running [%s]..." "$0"
+#printf -- "[%s]-" $*
+output()
+{
+	(printf "\n\t$(date +"%H:%M:%S"):==>$_thispackage:";	printf "$@")
+}
 
-printf "${_vabashvm}Installing..."
+output "Installing..."
 
 yum -y install php php-cli php-fpm php-intl php-mysqlnd php-pgsql php-pecl-mongo >/dev/null
-([[ $? -eq 0 ]] && php -v && printf "${_vabashvm}Installed.") || printf "${_vabashvm}Not installed."
 
-printf "${_vabashvm}Terminated.[%s]" "$0"
-printf "\n"
+[[ $? -eq 0 ]] && output "Installed." || output "Not installed."
+
+printf "\nvabashvm:$(date +"%H:%M:%S"):==>$_thispackage:End [%s]." "$0"
 
 exit 0

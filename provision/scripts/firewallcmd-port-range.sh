@@ -25,32 +25,36 @@
 #set -e
 
 : ${_thispackage="firewallcmd-port-range"}
-: ${_vabashvm="\nvabashvm:==>$_thispackage:"}
 : ${_thisfilename=${0##*/}}
-printf "${_vabashvm}Running [%s]..." "$0"
-#printf -- "${_vabashvm}[%s]-" $*
+printf "\nvabashvm:$(date +"%H:%M:%S"):==>$_thispackage:Running [%s]..." "$0"
+#printf -- "[%s]-" $*
+output()
+{
+	(printf "\n\t$(date +"%H:%M:%S"):==>$_thispackage:";	printf "$@")
+}
 
 
-printf "${_vabashvm}Configuring port(s)..."
+output "Configuring port(s)..."
 
 : ${_isok=0}
 
 case $# in
-	2)	printf "%s/%s" "$2" "$1"
-	    firewall-cmd --permanent --add-port="$2/$1" >/dev/null
+	2)	output "%s/%s" "$2" "$1"
+		firewall-cmd --permanent --add-port="$2/$1" >/dev/null
 		_isok=$(echo $?)
 		;;
-	3)	printf "%s-%s/%s" "$2" "$3" "$1"
-	    firewall-cmd --permanent --add-port="$2-$3/$1" >/dev/null
+	3)	output "%s-%s/%s" "$2" "$3" "$1"
+		firewall-cmd --permanent --add-port="$2-$3/$1" >/dev/null
 		_isok=$(echo $?)
 		;;
-	*)	printf "${_vabashvm}Error in number of parameteres.\nUsage: %s <protocol> <port> [<port>]\n" "$0"
+	*)	output "Error in number of parameteres.\nUsage: %s <protocol> <port> [<port>]\n" "$0"
 		_isok=1
 		;;
 esac
 
 [[ $_isok -eq 0 ]] && firewall-cmd --reload >/dev/null
 
-printf "${_vabashvm}Terminated.[%s]" "$0"
+printf "\nvabashvm:$(date +"%H:%M:%S"):==>$_thispackage:End [%s]." "$0"
+
 
 exit 0

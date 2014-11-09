@@ -21,13 +21,10 @@ ioutil_save_stdioerror()
 	then
 		exec 4>&2
 		exec 2>$ioutil_errorfile
-	
+
 		exec 3>&1
 		exec 1>$ioutil_logfile
 	fi
-	
-	# Redirect std error to error file
-	
 }
 ioutil_restore_stdioerror()
 {
@@ -40,7 +37,6 @@ ioutil_restore_stdioerror()
 		exec 1>&3
 		exec 3>&-
 	fi 
-	
 }
 
 # Print to the output that is defined
@@ -66,7 +62,7 @@ ioutil_output_notsoforce()
 # - self-explained...
 ioutil_output_both()
 {
-	[[ $ioutil_quiet = 0  ]] && (ioutil_output "$@" && (printf "\n$ioutil_package";	printf "$@") 1>&3) || ioutil_output "$@"	
+	[[ $ioutil_quiet = 0  ]] && (ioutil_output "$@" && (printf "\n$ioutil_package";	printf "$@") 1>&3) || ioutil_output "$@"
 }
 ioutil_set_quiet()
 {
@@ -77,7 +73,7 @@ ioutil_set_quiet()
 		local set_quiet_now_aux=$(date +"%Y%m%d%-H%M")
 		ioutil_output "$set_quiet_now_aux:$@\n"
 		printf "$set_quiet_now_aux:$@\n" 1>&2
-		
+
 	fi
 }
 ioutil_unset_quiet()
@@ -95,13 +91,12 @@ ioutil_unset_quiet()
 ioutil_exit_onerror()
 {
 	[[ $# -gt 0 ]] && ioutil_output_both "$@"
-	
+
 	ioutil_output_both "Script is terminating with error."
-	
+
 	[[ $ioutil_quiet = 0  ]] &&  ioutil_output_force "You can find more information below or by consulting the log files:\nError file:\t[%s]\nLog file:\t[%s]\n" "$ioutil_errorfile" "$ioutil_logfile"
-	
-	ioutil_unset_quiet		
-			
+
+	ioutil_unset_quiet
 	exit 1
 }
 
@@ -109,26 +104,26 @@ ioutil_exit_onerror()
 ioutil_exit_onterminating()
 {
 	[[ $# -gt 0 ]] && ioutil_output_both "$@"
-	
+
 	ioutil_output_both "Terminating."
-	
-	ioutil_unset_quiet	
-				
+
+	ioutil_unset_quiet
+
 	exit 1
 }
 
 ioutil_exit_onsucess()
 {
 	[[ $# -gt 0 ]] && ioutil_output_both "$@"
-	
+
 	ioutil_output_both "End."
-	
-	ioutil_unset_quiet	
-				
+
+	ioutil_unset_quiet
+
 	exit 0
 }
 
 ioutil_set_package()
 {
-	: ${ioutil_package="$1:==>"}	
+	: ${ioutil_package="$1:==>"}
 }

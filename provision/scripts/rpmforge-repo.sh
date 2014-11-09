@@ -12,38 +12,41 @@
 ## - CentOS 7 (64bit)
 ## ======================================================================
 
-: ${_thispackage="RPMForge Release"}
-: ${_vabashvm="\nvabashvm:==>$_thispackage:"}
+: ${_thispackage="RPMForge Repo"}
 : ${_thisfilename=${0##*/}}
-printf "${_vabashvm}Running [%s]..." "$0"
-#printf -- "${_vabashvm}[%s]-" $*
+printf "\nvabashvm:$(date +"%H:%M:%S"):==>$_thispackage:Running [%s]..." "$0"
+#printf -- "[%s]-" $*
+output()
+{
+	(printf "\n\t$(date +"%H:%M:%S"):==>$_thispackage:";	printf "$@")
+}
 
-yum repolist all | grep -q rpmforge
-[[ ! $? -eq 0 ]] && {
+: ${_version="$1"}
+: ${_arch="$(uname -i)"}
 
-    : ${_version="$1"}
-    : ${_arch="$(uname -i)"}
+: ${_isok=0}
+case "$_version" in
+	"6"|"7")
+		;;
+	*)
+		_isok=1
+	;;
+esac
 
-    : ${_isok=0}
-    case "$_version" in
-        "6"|"7")
-            ;;
-        *)
-            _isok=1
-            ;;
-    esac
+[[ ! _isok -eq 0 ]] && output "Invalid parameteres." || {
 
-    [[ _isok -eq 0 ]] && {
-        printf "${_vabashvm}Preparing to install version rpmforge-%s %s..." "$_version" "$_arch"
+	yum repolist all | grep -iq "rpmforge"
+	[[ $? -eq 0 ]] && output "Package is already installed." || {
 
-        rpm --import http://apt.sw.be/RPM-GPG-KEY.dag.txt
-        yum -y install http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el${_version}.rf.${_arch}.rpm >/dev/null
+		output "Preparing to install version rpmforge %s %s..." "$_version" "$_arch"
+		rpm --import http://apt.sw.be/RPM-GPG-KEY.dag.txt
+		[[ $? -eq 0 ]] && yum -y install http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el${_version}.rf.${_arch}.rpm >/dev/null 2>/dev/null
+		[[ $? -eq 0 ]] && sed -i "s|^enabled.*=.*1$|enabled = 0|g" /etc/yum.repos.d/rpmforge.repo
+		[[ $? -eq 0 ]] && yum repolist all | grep -i "rpmforge"
+		[[ $? -eq 0 ]] && output "Installed." || output "Error: not installed."
+	}
+}
 
-    } || printf "${_vabashvm}Invalid parameteres."
-
-} || printf "${_vabashvm}Seems to be already installed.Nothing to do."
-
-printf "${_vabashvm}Terminated.[%s]" "$0"
-printf "\n"
+printf "\nvabashvm:$(date +"%H:%M:%S"):==>$_thispackage:End [%s]." "$0"
 
 exit 0

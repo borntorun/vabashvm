@@ -16,9 +16,7 @@
 # if an error occurs stops
 #set -e
 
-: ${_vabashvm="\nvabashvm:==>"}
-
-printf "${_vabashvm}Running config script (config.sh)..."
+printf "\nvabashvm:$(date +"%H:%M:%S"):==>Running config script (config.sh)..."
 
 remote_path=$1
 #printf "${_vabashvm}%s\n" "$remote_path"
@@ -28,6 +26,8 @@ do
 
 	isargs=$(echo $file | grep ".args$")
 	[[ ! -z $isargs ]] && continue
+	echo "$file" | grep -q "\-dummy"
+	[[ $? -eq 0 ]] && continue
 
 	#printf "${_vabashvm}%s\n" "$file"
 
@@ -44,7 +44,7 @@ do
 		fi
 		#printf "${_vabashvm}[%s]\n" "${MAPFILE[@]}"
 		## veriry type os script
-		echo $file | grep "\-user\-" >/dev/null
+		echo "$file" | grep -q "\-user\-"
 		result=$?
 
 		if [[ $result -eq 0 ]]
@@ -56,11 +56,14 @@ do
 			fi
 		else
 			## run script normal
-			sh -l "$file" "${MAPFILE[@]}"			
+			sh -l "$file" "${MAPFILE[@]}"
 		fi
+		printf "\n----------------------------------------------------------------------------\n"
 	fi
 done
 
-printf "${_vabashvm}Terminating config script (config.sh)."
+printf "\nvabashvm:$(date +"%H:%M:%S"):==>End config script (config.sh)."
 
 exit 0
+
+

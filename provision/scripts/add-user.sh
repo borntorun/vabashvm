@@ -18,16 +18,19 @@
 set -e
 
 : ${_thispackage="Adding user"}
-: ${_vabashvm="\nvabashvm:==>$_thispackage:"}
 : ${_thisfilename=${0##*/}}
-printf "${_vabashvm}Running [%s]..." "$0"
-#printf -- "${_vabashvm}[%s]-" $*
+printf "\nvabashvm:$(date +"%H:%M:%S"):==>$_thispackage:Running [%s]..." "$0"
+#printf -- "[%s]-" $*
+output()
+{
+	(printf "\n\t$(date +"%H:%M:%S"):==>$_thispackage:";	printf "$@")
+}
 
 if [[ $# -eq 1 ]] && [[ ! -z $1 ]]
 then
 
 	if id -u "$1" >/dev/null 2>&1; then
-		printf "${_vabashvm}User [$1] already exists.\n"
+		output "User [$1] already exists.\n"
 	else
 		useradd -m -G wheel "$1"
 		#set passwd equal to login
@@ -61,9 +64,9 @@ EOF
 		fi
 	fi
 else
-	printf "${_vabashvm}User not provided."
+	output "User not provided."
 fi
 
-printf "${_vabashvm}Terminated.[%s]" "$0"
+printf "\nvabashvm:$(date +"%H:%M:%S"):==>$_thispackage:End [%s]." "$0"
 
 exit 0

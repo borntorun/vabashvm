@@ -16,21 +16,24 @@
 # if an error occurs stops
 #set -e
 : ${_thispackage="MongoDB"}
-: ${_vabashvm="\nvabashvm:==>$_thispackage:"}
 : ${_thisfilename=${0##*/}}
-printf "${_vabashvm}Running [%s]..." "$0"
-#printf -- "${_vabashvm}[%s]-" $*
+printf "\nvabashvm:$(date +"%H:%M:%S"):==>$_thispackage:Running [%s]..." "$0"
+#printf -- "[%s]-" $*
+output()
+{
+	(printf "\n\t$(date +"%H:%M:%S"):==>$_thispackage:";	printf "$@")
+}
 
 which mongod >/dev/null 2>&1
-[[ $? -eq 0 ]] && printf "${_vabashvm}Already installed. Nothing to do." && exit 0
+[[ $? -eq 0 ]] && output "Already installed. Nothing to do." || {
 
-: ${version="x86_64"}
+	: ${version="x86_64"}
 
-[[ ! $1 ]] && printf "${_vabashvm}No platform version choosen..." || ([[ "$1" == "32" ]] && version="i686")
+	[[ ! $1 ]] && output "No platform version choosen..." || ([[ "$1" == "32" ]] && version="i686")
 
-printf "${_vabashvm}Installing platform version [%s]..."  "$version"
+	output "Installing platform version [%s]..."  "$version"
 
-cat <<EOF >/etc/yum.repos.d/mongodb.repo
+	cat <<EOF >/etc/yum.repos.d/mongodb.repo
 [mongodb]
 name=MongoDB Repository
 baseurl=http://downloads-distro.mongodb.org/repo/redhat/os/${version}/
@@ -38,37 +41,35 @@ gpgcheck=0
 enabled=1
 EOF
 
-yum clean metadata >/dev/null
-yum -y install mongodb-org >/dev/null
-[[ $? -eq 0 ]] && {
+	yum clean metadata >/dev/null
+	yum -y install mongodb-org >/dev/null
+	[[ ! $? -eq 0 ]] && output "Error in installation." || {
 
-    printf "${_vabashvm}Package installed."
+		output "Package installed."
+		output "Configuring..."
 
-    printf "${_vabashvm}Configuring..."
+		sed -i "s|^enabled=1$|enabled=0|g" /etc/yum.repos.d/mongodb.repo
+		[[ ! $? -eq 0 ]] && output "Error configuring repo."
 
-    sed -i "s|^enabled=1$|enabled=0|g" /etc/yum.repos.d/mongodb.repo
-    [[ ! $? -eq 0 ]] && printf "${_vabashvm}Error configuring repo."
+		sed -i "s|^bind_ip=.*$|bind_ip=0.0.0.0|" /etc/mongod.conf
+		[[ ! $? -eq 0 ]] && output "Error configuring bind_ip."
 
-    sed -i "s|^bind_ip=.*$|bind_ip=0.0.0.0|" /etc/mongod.conf
-    [[ ! $? -eq 0 ]] && printf "${_vabashvm}Error configuring bind_ip."
+		which semanage >/dev/null 2>&1
+		[[ ! $? -eq 0 ]] && output "Installing configuring dependencies ..." && yum -y install policycoreutils-python >/dev/null
 
-    which semanage >/dev/null 2>&1
-    [[ ! $? -eq 0 ]] && printf "${_vabashvm}Installing configuring dependencies ..." && yum -y install policycoreutils-python >/dev/null
+		[[ $? -eq 0 ]] && semanage port -a -t mongod_port_t -p tcp 27017  >/dev/null
 
-    semanage port -a -t mongod_port_t -p tcp 27017  >/dev/null
+		output "Configuring firewall..."
+		firewall-cmd --permanent --zone=public --add-port=27017/tcp >/dev/null && firewall-cmd --permanent --zone=public --add-port=28017/tcp >/dev/null && firewall-cmd --reload >/dev/null
+		[[ ! $? -eq 0 ]] && output "Error configuring firewall."
 
-    printf "${_vabashvm}Configuring firewall..."
-    firewall-cmd --permanent --zone=public --add-port=27017/tcp >/dev/null
-    firewall-cmd --permanent --zone=public --add-port=28017/tcp >/dev/null
-    firewall-cmd --reload >/dev/null
+		output "Starting service..."
+		chkconfig --levels 2345 mongod on
+		systemctl start mongod >/dev/null
+		[[ ! $? -eq 0 ]] && output "Error starting service." || output "Service running."
+	}
+}
 
-    printf "${_vabashvm}Starting service..."
-    chkconfig --levels 2345 mongod on
-    systemctl start mongod >/dev/null
-    [[ ! $? -eq 0 ]] && printf "${_vabashvm}Error starting service." || printf "${_vabashvm}Installed and running."
-
-} || printf "${_vabashvm}Error installing MongoDB." && exit 0
-
-printf "${_vabashvm}Terminated.[%s]" "$0"
+printf "\nvabashvm:$(date +"%H:%M:%S"):==>$_thispackage:End [%s]." "$0"
 
 exit 0

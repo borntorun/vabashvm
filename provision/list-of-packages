@@ -1,31 +1,37 @@
-update-yum.sh		- to update the guest system
+update-yum.sh - to update the guest system
 
-epel-repo.sh    - Install EPEL release Extra Packages for Enterprise Linux
+epel-repo.sh - Install EPEL release Extra Packages for Enterprise Linux
 
-rpmforge-repo.sh    - Install RPMForge - RPM packages for Red Hat Enterprise Linux (RHEL), CentOS and Scientific Linux
+rpmforge-repo.sh - Install RPMForge - RPM packages for Red Hat Enterprise Linux (RHEL), CentOS and Scientific Linux
 
-net-eth-rules.sh	- configure network interfaces to use eth* name rules (CentOS 7)
+remi-and-epel-repo.sh - Install Remi Repo and EPEL Repo
 
-hostname.sh			- set hostname on guest system
+net-eth-rules.sh - configure network interfaces to use eth* name rules (CentOS 7)
 
-add-user.sh			- to add a user to the system
+hostname.sh - set hostname on guest system
 
-nodejs-nvm.sh		- Install Node.js with Node Version Manager
+add-user.sh - to add a user to the system
 
-nodejs-redhat-global.sh		- Install Node.js global via packager manager
+nodejs-nvm.sh - Install Node.js with Node Version Manager
 
-heroku.sh			- Install heroku toolbelt
+nodejs-redhat-global.sh - Install Node.js global via packager manager
 
-git.sh				- Install git (chossing version in args ou Install latest)
+heroku.sh - Install heroku toolbelt
 
-mongodb.sh  - Install MongoDB 32 or 64 (default) bit version
+git.sh - Install git (chossing version in args ou Install latest)
 
-firewallcmd-port-range.sh   - enable port or port range on the firewall (CentOS 7)
+mongodb.sh - Install MongoDB 32 or 64 (default) bit version
 
-neo4j.sh    - Installs Neo4j Database Graph Server
+firewallcmd-port-range.sh - enable port or port range on the firewall (CentOS 7)
 
-mariadb-centos7-64.sh   - Install MariaDB server (MySql)
+neo4j.sh - Installs Neo4j Database Graph Server
+
+mariadb-centos7-64.sh - Install MariaDB server (MySql)
+
+postgres9.3-centos7-64.sh - Install Postgres Database Server
 
 httpd.sh - Install httpd - Apache Web Server
 
-php-onhttpd-centos7.sh  - Installs php
+php.sh - Installs php
+
+php5.6.2-remi.sh - Installs php 5.6.2 from remi repo

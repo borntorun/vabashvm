@@ -24,36 +24,39 @@ You will need the following software installed in your system:
   - [VirtualBox](https://www.virtualbox.org/)
   - a shell environment...
   - a supported [Vagrant Box](#vboxsupported)  
-    
 
-	
 ### How to use
 
-- Clone the project
-- (optional:Update $PATH with project folder)
-- $ vabashvm.sh -b\<box_name> -m\<vm_name>
-    - the script will create a folder 'machines/\<vm_name> in current folder to hold the vagrant files
+Clone the project
+Optional: update $PATH with project folder
+```
+$ vabashvm.sh -b\<box_name> -m\<vm_name>
+```
+The script will create a folder 'machines/\<vm_name> in current folder to hold the vagrant files
 - access the folder created and use vagrant commands as usual
 
 or, to see usage parameters 
-
-- $ vabashvm.sh -h
-
+```
+$ vabashvm.sh -h
+```
 ### <a name="vboxsupported"/>Vagrant Box supported, used and tested (until now): 
 
-- CentOS 7 - From this github project [Centos7-devel-x86_64](https://github.com/borntorun/packer-vagrant-centos)
+CentOS 7 - From [packer-vagrant-centos](https://github.com/borntorun/packer-vagrant-centos) github project
+- CentOS-devel-x86_64
+- CentOS-minimal-x86_64
     
-- others to come...
+Others to come...
 
 ### Systems/Environments versions tested: 
 
-* Windows 7
-	- Packer v0.7.1
-	- VirtualBox 4.3.12 r.93733 with 4.3.14 guest additions (see [here](https://forums.virtualbox.org/viewtopic.php?f=3&t=62485&start=15#p298960) why)
-    - VirtualBox 4.3.16 r.95972 with 4.3.16 guest additions 
-	- Vagrant 1.6.5
-	- vagrant-vbguest plugin (0.10.0)
-	- MSYS (Minimal SYStem) provided by MinGW / GNU bash, version 3.1.20(4)-release-(i686-pc-msys)
+* Host system: Windows 7
+* Packer v0.7.1
+* VirtualBox 4.3.12 r.93733 with 4.3.**14** guest additions (see [here](https://forums.virtualbox.org/viewtopic.php?f=3&t=62485&start=15#p298960) why)
+* VirtualBox 4.3.16 r.95972 with 4.3.16 guest additions 
+* VirtualBox 4.3.18 r.96516  with 4.3.16 guest additions
+* Vagrant 1.6.5
+* vagrant-vbguest plugin (0.10.0)
+* MSYS (Minimal SYStem) provided by MinGW / GNU bash, version 3.1.20(4)-release-(i686-pc-msys)
 
 ### Shell scripts for provision packages included
 
@@ -61,8 +64,8 @@ or, to see usage parameters
 
 ### Comments, Contributions and Testing...
 
-- are much welcome and appreciatted...
+are much welcome and appreciatted...
 
 ### Author
 
-	João Carvalho, 2014
+João Carvalho, 2014

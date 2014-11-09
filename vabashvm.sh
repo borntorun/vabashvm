@@ -508,7 +508,11 @@ vagrant_firstup()
 	
 	provision_global
 	
-	[[ "$prioritypack" == "0" ]] && provision_priority_packages
+	[[ "$prioritypack" == "0" ]] && {
+		vbguestupdate=0
+		ioutil_output_force "VB Guest Additions will be updated.(forced by eventually system update)\n"
+		provision_priority_packages
+	}
 	
 	if [[ ! $novbguestplugin ]]
 	then
@@ -538,6 +542,6 @@ vagrant_secondup
 
 vagrant_final
 
-#ioutil_exit_onsucess "Machine [%s] is running..." "$vmname"
+ioutil_exit_onsucess "Machine [%s] is running..." "$vmname"
 
 exit 0

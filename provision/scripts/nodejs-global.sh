@@ -17,28 +17,28 @@
 #set -e
 
 : ${_thispackage="Node.js"}
-: ${_vabashvm="\nvabashvm:==>$_thispackage:"}
 : ${_thisfilename=${0##*/}}
-printf "${_vabashvm}Running [%s]..." "$0"
-#printf -- "${_vabashvm}[%s]-" $*
+printf "\nvabashvm:$(date +"%H:%M:%S"):==>$_thispackage:Running [%s]..." "$0"
+#printf -- "[%s]-" $*
+output()
+{
+	(printf "\n\t$(date +"%H:%M:%S"):==>$_thispackage:";	printf "$@")
+}
 
-printf "${_vabashvm}Installing nodesource repo..."
+output "Installing nodesource repo..."
 curl -L https://rpm.nodesource.com/setup 2>/dev/null | sudo bash - >/dev/null
-[[ $? -eq 0 ]] && {
-    printf "${_vabashvm}Installing dependencies..."
+[[ ! $? -eq 0 ]] && output "Error downloading rpm package." || {
+	output "Installing dependencies..."
+	yum -y install gcc-c++ make 1>/dev/null
+	[[ ! $? -eq 0 ]] && output "Error installing dependencies." || {
 
-    yum -y install gcc-c++ make 1>/dev/null
-    [[ $? -eq 0 ]] && {
-        printf "${_vabashvm}Installing package..."
+		output "Installing package..."
+		yum -y install nodejs 1>/dev/null
+		[[ $? -eq 0 ]] && output "Package installed" || output "Error installing package."
+	}
+}
 
-        yum -y install nodejs 1>/dev/null
-        [[ $? -eq 0 ]] && printf "${_vabashvm}Package installed" || printf "${_vabashvm}Error installing package."
-
-    } || printf "${_vabashvm}Error installing dependencies."
-
-} || printf "${_vabashvm}Error downloading rpm package."
-
-printf "${_vabashvm}Terminated.[%s]" "$0"
+printf "\nvabashvm:$(date +"%H:%M:%S"):==>$_thispackage:End [%s]." "$0"
 
 exit 0
 

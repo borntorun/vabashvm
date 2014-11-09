@@ -16,10 +16,13 @@
 # if an error occurs stops
 #set -e
 : ${_thispackage="hostname"}
-: ${_vabashvm="\nvabashvm:==>$_thispackage:"}
 : ${_thisfilename=${0##*/}}
-printf "${_vabashvm}Running [%s]..." "$0"
-#printf -- "${_vabashvm}[%s]-" $*
+printf "\nvabashvm:$(date +"%H:%M:%S"):==>$_thispackage:Running [%s]..." "$0"
+#printf -- "[%s]-" $*
+output()
+{
+	(printf "\n\t$(date +"%H:%M:%S"):==>$_thispackage:";	printf "$@")
+}
 
 util_isvalidip() #@ USAGE: util_isvalidip DOTTED-QUAD 
 { 
@@ -47,14 +50,13 @@ util_isvalidip() #@ USAGE: util_isvalidip DOTTED-QUAD
 
 if [[ $# -eq 2 ]] && [[ $(util_isvalidip "$2") -eq 0 ]]
 then
-	printf "${_vabashvm}Configuring..."
 	printf "\nHOSTNAME=%s" "$1" >> /etc/sysconfig/network
 	printf "\n%s %s" "$2" "$1" >> /etc/hosts
-	hostname "$1"		
 else
-	printf "${_vabashvm}Not configuring - incorrect parameters."
+	output "Not configuring - incorrect parameters."
 fi
 
-printf "${_vabashvm}Terminated.[%s]" "$0"
+printf "\nvabashvm:$(date +"%H:%M:%S"):==>$_thispackage:End [%s]." "$0"
+
 
 exit 0

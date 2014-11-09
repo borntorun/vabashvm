@@ -14,13 +14,15 @@
 #set -e
 
 : ${_thispackage="CentOS-7-net-eth-rules"}
-: ${_vabashvm="\nvabashvm:==>$_thispackage:"}
 : ${_thisfilename=${0##*/}}
-printf "${_vabashvm}Running [%s]..." "$0"
-#printf -- "${_vabashvm}[%s]-" $*
+printf "\nvabashvm:$(date +"%H:%M:%S"):==>$_thispackage:Running [%s]..." "$0"
+#printf -- "[%s]-" $*
+output()
+{
+	(printf "\n\t$(date +"%H:%M:%S"):==>$_thispackage:";	printf "$@")
+}
 
-
-printf "${_vabashvm}Configuring..."
+output "Configuring..."
 
 : ${_index=0}
 : ${_filerules="/etc/udev/rules.d/99-configeth.rules"}
@@ -34,7 +36,7 @@ do
 	_newdevname="eth${_index}"
 	_newfile="/etc/sysconfig/network-scripts/ifcfg-${_newdevname}"
 
-	printf "${_vabashvm}Configuring [%s]" "$_newdevname"
+	output "Configuring [%s]" "$_newdevname"
 
 	printf "SUBSYSTEM==\"net\", ACTION==\"add\", DRIVERS==\"?*\", ATTR{address}==\"%s\", ATTR{dev_id}==\"0x0\", ATTR{type}==\"1\", KERNEL==\"eth*\", NAME=\"eth%s\"\n" "$(cat $file/address)" "$((_index++))" >> "$_filerules"
 
@@ -45,6 +47,6 @@ do
 
 done
 
-printf "${_vabashvm}Terminated.[%s]" "$0"
+printf "\nvabashvm:$(date +"%H:%M:%S"):==>$_thispackage:End [%s]." "$0"
 
 exit 0

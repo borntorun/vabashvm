@@ -1,16 +1,16 @@
 #!/bin/bash
 ## ======================================================================
 ## vabashvm - https://github.com/borntorun/vabashvm
-## Author: João Carvalho 
+## Author: João Carvalho
 ## https://raw.githubusercontent.com/borntorun/vabashvm/master/LICENSE
 ## ======================================================================
 ## Install NEO4J Graph Database Server
 ##
-## This will install v 2.1.5. Not configuring version as passing parameter
-## because at this time not sure about general repository for neo4j versions
+## $1 - version to install [2.1.6 default]
 ##
 ## This script was tested sucessfully in:
 ## - CentOS 7 (64bit)
+## - with versions of Neo4j 2.1.5 & 2.1.6
 ## ======================================================================
 
 # if an error occurs stops
@@ -25,8 +25,9 @@ output()
 	(printf "\n\t$(date +"%H:%M:%S"):==>$_thispackage:";	printf "$@")
 }
 
-
-: ${_version="2.1.5"}
+: ${_version="$1"}
+[[ -z $_version ]] && _version="2.1.6"
+output "Preparing to install version %s..." "$_version"
 
 systemctl status neo4dj-service.service 2>/dev/null | grep "Loaded: loaded" >/dev/null
 [[ $? -eq 0 ]] && output "Already installed. Nothing to do." || {
@@ -42,7 +43,7 @@ systemctl status neo4dj-service.service 2>/dev/null | grep "Loaded: loaded" >/de
 	#exit
 
 	output "Installing java opensdk 1.7 if needed..."
-	yum -y install java*1.7*openjdk* >/dev/null
+	yum -y install java*1.7*openjdk >/dev/null
 
 	# dependencies
 	yum -y install lsof >/dev/null

@@ -12,20 +12,20 @@
 ##  s	Indicates a 'System' script need to be run with root priviledges
 ##  u	Indicates a 'User' script need to be run under a user account
 ##  	Colon (:) Is used as separator and MUST exists
-##  	[:args[:<argument>]]	
+##  	[:args[:<argument>]]
 ##			At the end of the line indicates that arguments to the script will be passed from a file
-##			with the same filename as the script plus '.args', ex: add-user.sh.args . 
+##			with the same filename as the script plus '.args', ex: add-user.sh.args .
 ##			The .args file will be created at runtime (one for each script) and you will be able to edit it
 ##			after selecting and saving this file.
 ##			<argument>	may be used to pass defaults arguments to the script instead of using a .args file
 ##					(	the vabashvm script will create+edit+save it for you)
-##						format: string[|string]	
+##						format: string[|string]
 ##							is any string text ex: John
 ##							or a multiple string texts separated with pipe (|) ex: John|King of Portugal
 ##
 ## IMPORTANT: 	Scripts will run (for each group [asap|system|user]) in the order they appear in this file
 ##				p: 'asap' scripts will always run before others
-## You can:	Edit each beginning of line to select a script: 
+## You can:	Edit each beginning of line to select a script:
 ##			-include '+' to select a package
 ##			-remove '+' to unselect a package
 ##			-include ':args' at the end of line if script has arguments to be passed into
@@ -89,8 +89,10 @@ s:nodejs-global.sh
 # Install git version * install latest or specified as [:args:x.x.x]
 s:git.sh
 
-# Install Neo4j * see script for version
-s:neo4j.sh
+# Install Neo4j *
+# the following example install version 2.1.6
+# +s:neo4j.sh:args:2.1.6
+s:neo4j.sh:args
 
 # Install MongoDB * install 64 bit version or version specified as [:args:[32|64]]
 s:mongodb.sh

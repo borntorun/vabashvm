@@ -90,9 +90,10 @@ s:nodejs-global.sh
 s:git.sh
 
 # Install Neo4j *
-# the following example install version 2.1.6
+# Installs neo4j database server; version specified as [:args:[x.x.x]] (2.1.6 default)
+# example installs 2.1.6
 # +s:neo4j.sh:args:2.1.6
-s:neo4j.sh:args
+s:neo4j.sh
 
 # Install MongoDB * install 64 bit version or version specified as [:args:[32|64]]
 s:mongodb.sh

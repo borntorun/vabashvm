@@ -44,8 +44,6 @@ $ vabashvm.sh -h
 CentOS 7 - From [packer-vagrant-centos](https://github.com/borntorun/packer-vagrant-centos) github project
 - CentOS-devel-x86_64
 - CentOS-minimal-x86_64
-    
-Others to come...
 
 ### Systems/Environments versions tested: 
 

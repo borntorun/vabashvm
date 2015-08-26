@@ -95,8 +95,11 @@ s:git.sh
 # +s:neo4j.sh:args:2.1.6
 s:neo4j.sh
 
-# Install MongoDB * install 64 bit version or version specified as [:args:[32|64]]
+# Install MongoDB version<3.0 * install 64 bit version or version specified as [:args:<32|64>]
 s:mongodb.sh
+
+# Install MongoDB version 3.0 * 64 bit version for redhat systems version 6|7(default)  [:args:<6|7>]
+s:mongodb3.sh
 
 # Install Postgres Database Server * install v.9.3 64 bit. Args as [:args:<system user to create on db>[|<ipmask_remote_net_access>]]
 # ex: # +s:postgres9.3-centos7-64.sh:args:john|192.168.40.0/24

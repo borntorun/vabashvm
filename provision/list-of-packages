@@ -20,7 +20,9 @@ heroku.sh - Install heroku toolbelt
 
 git.sh - Install git (chossing version in args ou Install latest)
 
-mongodb.sh - Install MongoDB 32 or 64 (default) bit version
+mongodb.sh - Install MongoDB (latest v2.6) 32bit or 64bit (default) version with yum
+
+mongodb3.sh - Install MongoDB 3.0 64bit version with yum
 
 firewallcmd-port-range.sh - enable port or port range on the firewall (CentOS 7)
 

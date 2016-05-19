@@ -71,6 +71,9 @@ s:heroku.sh
 
 ## *** REDHAT based ***
 
+# Install tmux terminal multiplexer
+s:tmux.sh
+
 # Install EPEL repo version specified as :args[:<6|7>]
 s:epel-repo.sh:args
 
@@ -83,8 +86,8 @@ s:remi-and-epel-repo.sh:args
 # enable ports in firewall supplied as :args:<protocol>|<port start range>[|<port final range>]
 s:firewallcmd-port-range.sh:args
 
-# Install node global
-s:nodejs-global.sh
+# Install node global version specified as :args[:<4|5|6|...>]
+s:nodejs-global.sh:args
 
 # Install git version * install latest or specified as [:args:x.x.x]
 s:git.sh

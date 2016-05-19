@@ -18,6 +18,8 @@ nodejs-redhat-global.sh - Install Node.js global via packager manager
 
 heroku.sh - Install heroku toolbelt
 
+tmux.sh - Install tmux terminal multiplexer
+
 git.sh - Install git (chossing version in args ou Install latest)
 
 mongodb.sh - Install MongoDB (latest v2.6) 32bit or 64bit (default) version with yum

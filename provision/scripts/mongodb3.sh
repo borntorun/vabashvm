@@ -1,17 +1,23 @@
 #!/bin/bash
 
+## This script was ****** NOT ****** tested sucessfully in:
+
 ## ======================================================================
 ## vabashvm - https://github.com/borntorun/vabashvm
 ## Author: João Carvalho
 ## https://raw.githubusercontent.com/borntorun/vabashvm/master/LICENSE
 ## ======================================================================
-## Install MongoDB v. 3.0
+## Install MongoDB v3.2
 ##
 ## $1 - redhat system version to install [6|7 default]
 ##
-## This script was not entirely tested yet sucessfully in:
+## This script was ****** NOT ****** tested sucessfully in:
 ## 		CentOS 7 (64bit)
 ## ======================================================================
+
+
+## This script was ****** NOT ****** tested sucessfully in:
+
 
 # if an error occurs stops
 #set -e
@@ -36,26 +42,26 @@ output()
 
     output "Installing platform version [%s]..."  "$version"
 
-	  cat <<EOF >/etc/yum.repos.d/mongodb-org-3.0.repo
-[mongodb]
+	  cat <<EOF >/etc/yum.repos.d/mongodb-org-3.2.repo
+[mongodb-org-3.2]
 name=MongoDB Repository
-baseurl=https://repo.mongodb.org/yum/redhat/${version}/mongodb-org/3.0/x86_64/
+baseurl=https://repo.mongodb.org/yum/redhat/${version}/mongodb-org/3.2/x86_64/
 gpgcheck=0
 enabled=1
 EOF
-
-    yum clean metadata >/dev/null
-    yum -y install mongodb-org >/dev/null
+#gpgkey=https://www.mongodb.org/static/pgp/server-3.2.asc
+    yum clean all >/dev/null
+    yum -y install mongodb-org #>/dev/null
     [[ ! $? -eq 0 ]] && output "Error in installation." || {
 
       output "Package installed."
       output "Configuring..."
 
-      sed -i "s|^enabled=1$|enabled=0|g" /etc/yum.repos.d/mongodb-org-3.0.repo
+      sed -i "s|^enabled=1$|enabled=0|g" /etc/yum.repos.d/mongodb-org-3.2.repo
       [[ ! $? -eq 0 ]] && output "......Error configuring repo."
 
-      sed -i "s|^bind_ip=.*$|bind_ip=0.0.0.0|" /etc/mongod.conf
-      [[ ! $? -eq 0 ]] && output "......Error configuring bind_ip."
+      #sed -i "s|^bind_ip=.*$|bind_ip=0.0.0.0|" /etc/mongod.conf
+      #[[ ! $? -eq 0 ]] && output "......Error configuring bind_ip."
 
       cat <<EOF >>/etc/yum.conf
 exclude=mongodb-org,mongodb-org-server,mongodb-org-shell,mongodb-org-mongos,mongodb-org-tools

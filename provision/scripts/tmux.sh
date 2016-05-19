@@ -21,6 +21,9 @@ output()
 {
 	(printf "\n\t$(date +"%H:%M:%S"):==>$_thispackage:";	printf "$@")
 }
+## verify if there is a specifiv user where to apply tmux on login
+: ${vabashvm_user=$1}
+
 
 which tmux >/dev/null 2>&1
 [[ $? -eq 0 ]] && output "tmux already installed. Nothing to do." && exit 0
@@ -44,6 +47,15 @@ output "Configuring path..."
 cd
 echo "pathmunge ${_installdir}"$'\n'"export PATH" >> $_thispackage-profile-tmp.sh
 sudo mv $_thispackage-profile-tmp.sh /etc/profile.d/z_vabashvm_$_thispackage.sh
+[[ -d /home/$vabashvm_user ]] && {
+  sudo cat <<EOF >>"/home/$vabashvm_user/.bashrc"
+
+# Start tmux terminal
+# If not running interactively, do not do anything
+[[ \$- != *i* ]] && return
+[[ -z "\$TMUX" ]] && exec tmux
+EOF
+}
 
 output "Cleaning..."
 rm -f z_vabashvm_$_thispackage.sh

@@ -4,7 +4,7 @@
 ## Author: João Carvalho
 ## https://raw.githubusercontent.com/borntorun/vabashvm/master/LICENSE
 ## ======================================================================
-## Install tmux
+## Install tmux terminal multiplexer
 ##
 ## This script was tested sucessfully in:
 ## - CentOS 7 (64bit)

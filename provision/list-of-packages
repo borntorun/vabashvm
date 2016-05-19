@@ -20,6 +20,8 @@ heroku.sh - Install heroku toolbelt
 
 tmux.sh - Install tmux terminal multiplexer
 
+docker.sh - Install docker
+
 git.sh - Install git (chossing version in args ou Install latest)
 
 mongodb.sh - Install MongoDB (latest v2.6) 32bit or 64bit (default) version with yum

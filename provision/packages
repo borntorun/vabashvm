@@ -71,8 +71,14 @@ s:heroku.sh
 
 ## *** REDHAT based ***
 
-# Install tmux terminal multiplexer
-s:tmux.sh
+# Install docker :args:<user>
+# user is needed to add to docker group
+s:docker.sh:args
+
+# Install tmux terminal multiplexer :args:<user>
+# tmux is installed globally in /usr/local/tmux
+# user is needed to start tmux at login shell (/home/<user>/.bashrc is edited)
+s:tmux.sh:args
 
 # Install EPEL repo version specified as :args[:<6|7>]
 s:epel-repo.sh:args

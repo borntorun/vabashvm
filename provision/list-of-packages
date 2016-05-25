@@ -12,6 +12,10 @@ hostname.sh - set hostname on guest system
 
 add-user.sh - to add a user to the system
 
+sambaservice.sh - Install Samba
+
+sambashare.sh - Define a share in samba configuration
+
 nodejs-nvm.sh - Install Node.js with Node Version Manager
 
 nodejs-redhat-global.sh - Install Node.js global via packager manager

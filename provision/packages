@@ -63,6 +63,14 @@ s:hostname.sh:args
 # create user supplied in args
 s:add-user.sh:args
 
+# Install Samba [:args:<workgroup>]
+s:sambaservice.sh:args:WORKGROUP
+
+# Define a share in samba configuration :args:<share_name>|<user>|<path>]
+# path will be created in /home/<user>/
+# a share will be defined with write permissions to the <user> specified as this user will be added to a group named smbgrp
+s:sambashare.sh:args
+
 # Install Node.js by nvm in user folder with version specified as :args:<user>[|v0.10.32]
 u:nodejs-nvm.sh:args
 

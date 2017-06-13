@@ -106,7 +106,7 @@ do
 		;;
 	h)	#ioutil_output_force "Help:\n"
 		printusage "$script_name"
-		;;
+		;;  
 	esac
 done
 
@@ -487,7 +487,7 @@ vagrant_secondup()
 	provision_software_packages
 
 	## 2nd boot with provision
-	vagrant up --provision
+	vagrant up --provision --provider virtualbox
 	[[ ! $? -eq 0 ]] && ioutil_exit_onerror "Error on boot up (2)"
 
 	## dont need to halt the machine
@@ -521,7 +521,7 @@ vagrant_firstup()
 	fi
 
 	## 1st boot up
-	vagrant up
+	vagrant up --provider virtualbox
 	[[ ! $? -eq 0 ]] && ioutil_exit_onerror "Error on boot up (1)"
 	vagrant halt
 	[[ ! $? -eq 0 ]] && ioutil_exit_onerror "Error on halt (1)"
